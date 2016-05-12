@@ -12,8 +12,9 @@
 		E4310CB71CE3FB8500C45BAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4310CB51CE3FB8500C45BAB /* Main.storyboard */; };
 		E4310CB91CE3FB8500C45BAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4310CB81CE3FB8500C45BAB /* Assets.xcassets */; };
 		E4310CBC1CE3FB8500C45BAB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4310CBA1CE3FB8500C45BAB /* LaunchScreen.storyboard */; };
-		E4310CC71CE3FB8500C45BAB /* ArenaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CC61CE3FB8500C45BAB /* ArenaTests.swift */; };
 		E4310CD21CE3FB8500C45BAB /* ArenaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CD11CE3FB8500C45BAB /* ArenaUITests.swift */; };
+		E4310CE21CE3FBF200C45BAB /* Creature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CE11CE3FBF200C45BAB /* Creature.swift */; };
+		E4310CE41CE3FD7F00C45BAB /* CreatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,11 +43,12 @@
 		E4310CBB1CE3FB8500C45BAB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E4310CBD1CE3FB8500C45BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4310CC21CE3FB8500C45BAB /* ArenaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArenaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4310CC61CE3FB8500C45BAB /* ArenaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaTests.swift; sourceTree = "<group>"; };
 		E4310CC81CE3FB8500C45BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4310CCD1CE3FB8500C45BAB /* ArenaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArenaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4310CD11CE3FB8500C45BAB /* ArenaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaUITests.swift; sourceTree = "<group>"; };
 		E4310CD31CE3FB8500C45BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E4310CE11CE3FBF200C45BAB /* Creature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Creature.swift; sourceTree = "<group>"; };
+		E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatureTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		E4310CB01CE3FB8500C45BAB /* Arena */ = {
 			isa = PBXGroup;
 			children = (
+				E4310CE11CE3FBF200C45BAB /* Creature.swift */,
 				E4310CB11CE3FB8500C45BAB /* AppDelegate.swift */,
 				E4310CB31CE3FB8500C45BAB /* ViewController.swift */,
 				E4310CB51CE3FB8500C45BAB /* Main.storyboard */,
@@ -110,7 +113,7 @@
 		E4310CC51CE3FB8500C45BAB /* ArenaTests */ = {
 			isa = PBXGroup;
 			children = (
-				E4310CC61CE3FB8500C45BAB /* ArenaTests.swift */,
+				E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */,
 				E4310CC81CE3FB8500C45BAB /* Info.plist */,
 			);
 			path = ArenaTests;
@@ -258,6 +261,7 @@
 			files = (
 				E4310CB41CE3FB8500C45BAB /* ViewController.swift in Sources */,
 				E4310CB21CE3FB8500C45BAB /* AppDelegate.swift in Sources */,
+				E4310CE21CE3FBF200C45BAB /* Creature.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,7 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4310CC71CE3FB8500C45BAB /* ArenaTests.swift in Sources */,
+				E4310CE41CE3FD7F00C45BAB /* CreatureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,10 +425,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = ArenaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = THEODAB.ArenaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arena.app/Arena";
 			};
 			name = Debug;
@@ -433,6 +439,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = ArenaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = THEODAB.ArenaTests;
@@ -482,6 +489,7 @@
 				E4310CD81CE3FB8500C45BAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E4310CD91CE3FB8500C45BAB /* Build configuration list for PBXNativeTarget "ArenaTests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +498,7 @@
 				E4310CDB1CE3FB8500C45BAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E4310CDC1CE3FB8500C45BAB /* Build configuration list for PBXNativeTarget "ArenaUITests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +507,7 @@
 				E4310CDE1CE3FB8500C45BAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
