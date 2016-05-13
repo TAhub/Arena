@@ -11,12 +11,22 @@ import SpriteKit
 class Creature
 {
 	//public variables
+	
+	//main variables
 	var position:CGPoint
 	var health:Int
 	
+	//attacking variables
+	var attackTimer:CGFloat?
+	var attackCooldown:CGFloat?
+	
 	//private variables
+	
+	//movement variables
 	private var moveVector:CGPoint = CGPointMake(0, 0)
 	private var accelDirection:CGFloat?
+	
+	//stun/knockback variables
 	private var stun:CGFloat = 0
 	private var knockbackDirection:CGFloat!
 	private var knockbackLength:CGFloat!
@@ -55,6 +65,29 @@ class Creature
 		{
 			elapsed -= stun
 			stun = 0
+		}
+		
+		//attack progress
+		if let attackTimer = self.attackTimer
+		{
+			let attackSpeed:CGFloat = 0.5
+			self.attackTimer = attackTimer + attackSpeed * elapsed
+			if self.attackTimer! >= 1
+			{
+				//TODO: unleash attack
+				
+				self.attackTimer = nil
+				self.attackCooldown = 0
+			}
+		}
+		if let attackCooldown = self.attackCooldown
+		{
+			let attackCooldownSpeed:CGFloat = 0.5
+			self.attackCooldown = attackCooldown + attackCooldownSpeed * elapsed
+			if self.attackCooldown! >= 1
+			{
+				self.attackCooldown = nil
+			}
 		}
 		
 		//TODO: do all things that are affected by stun here
@@ -104,6 +137,14 @@ class Creature
 		if (knockbackLength > 0)
 		{
 			self.moveVector = CGPointMake(0, 0)
+		}
+	}
+	
+	func attack()
+	{
+		if self.stun == 0 && self.attackTimer == nil && self.attackCooldown == nil
+		{
+			self.attackTimer = 0
 		}
 	}
 }

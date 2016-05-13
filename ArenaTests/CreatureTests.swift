@@ -25,6 +25,14 @@ class CreatureTests: XCTestCase {
         super.tearDown()
     }
 	
+	func testNoChangeAtRest()
+	{
+		creature.update(100)
+		XCTAssertEqual(creature.position.x, 100)
+		XCTAssertEqual(creature.position.y, 100)
+		XCTAssertEqual(creature.health, 3)
+	}
+	
 	//test the movement system
 	
 	func testMoveParabolic()
@@ -163,17 +171,66 @@ class CreatureTests: XCTestCase {
 		creature.update(1.0)
 		XCTAssertEqual(creature.position.x, oldX)
 	}
-    
-//    func testExample() {
-//        // This is an example of a functional test case.
-//        // Use XCTAssert and related functions to verify your tests produce the correct results.
-//    }
-//    
-//    func testPerformanceExample() {
-//        // This is an example of a performance test case.
-//        self.measureBlock {
-//            // Put the code you want to measure the time of here.
-//        }
-//    }
-//    
+	
+	
+	//attack tests
+	
+	func testAttackTimer()
+	{
+		//test to make sure that the attack timer starts at nil, is set to 0 when attacking, works its way up to 1, and then after a while returns to being nil
+		XCTAssertNil(creature.attackTimer)
+		creature.attack()
+		XCTAssertNotNil(creature.attackTimer)
+		XCTAssertEqual(creature.attackTimer ?? 999, 0)
+		creature.update(0.1)
+		XCTAssertNotNil(creature.attackTimer)
+		XCTAssertGreaterThan(creature.attackTimer ?? 999, 0)
+		XCTAssertLessThan(creature.attackTimer ?? 999, 1)
+		creature.update(100)
+		XCTAssertNil(creature.attackTimer)
+	}
+	
+	func testAttackCooldown()
+	{
+		//test to make sure that attack cooldown starts at nil, is set to 0 when attack timer is over, works up to 1, and then returns to nil
+		XCTAssertNil(creature.attackCooldown)
+		creature.attack()
+		XCTAssertNil(creature.attackCooldown)
+		while creature.attackTimer != nil
+		{
+			creature.update(0.1)
+		}
+		XCTAssertNotNil(creature.attackCooldown)
+		creature.update(100)
+		XCTAssertNil(creature.attackCooldown)
+	}
+	
+	func testNoAttackWhileStunned()
+	{
+		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 1.0)
+		creature.attack()
+		XCTAssertNil(creature.attackTimer)
+		creature.update(100)
+		creature.attack()
+		XCTAssertNotNil(creature.attackTimer)
+	}
+	
+	func testNoAttackWhileAttacking()
+	{
+		creature.attack()
+		creature.update(0.1)
+		creature.attack()
+		XCTAssertNotEqual(creature.attackTimer ?? 0, 0)
+	}
+	
+	func testNoAttackWhileInCooldown()
+	{
+		creature.attack()
+		while creature.attackCooldown == nil
+		{
+			creature.update(0.1)
+		}
+		creature.attack()
+		XCTAssertNil(creature.attackTimer)
+	}
 }
