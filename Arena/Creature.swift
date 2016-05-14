@@ -38,18 +38,77 @@ class Creature
 		self.health = 3
 	}
 	
-	func move(direction:CGFloat)
+	private func collideAt(point:CGPoint, creatureArray:[Creature]) -> Bool
 	{
-		accelDirection = direction
+		//get your size
+		let size:CGFloat = 5
+		
+		for creature in creatureArray
+		{
+			if !(creature === self)
+			{
+				//get their size
+				let theirSize:CGFloat = 5
+				
+				//how far away are you?
+				let xDis:CGFloat = abs(point.x - creature.position.x)
+				let yDis:CGFloat = abs(point.y - creature.position.y)
+				let distance:CGFloat = sqrt(xDis * xDis + yDis * yDis)
+				if (distance <= size + theirSize)
+				{
+					return true
+				}
+			}
+		}
+		return false
 	}
 	
-	func update(elapsed:CGFloat)
+	func collidePoint(point:CGPoint) -> Bool
+	{
+		let size:CGFloat = 5
+		
+		let xDis:CGFloat = abs(point.x - position.x)
+		let yDis:CGFloat = abs(point.y - position.y)
+		let distance:CGFloat = sqrt(xDis * xDis + yDis * yDis)
+		return distance <= size
+	}
+	
+	private func moveInner(vector:CGPoint, creatureArray:[Creature]?)
+	{
+		if let creatureArray = creatureArray
+		{
+			let length:CGFloat = abs(vector.x * vector.x + vector.y * vector.y)
+			
+			//don't go through the whole process when there is no movement necessary
+			if length == 0
+			{
+				return
+			}
+			
+			let moves:Int = Int(ceil(length / 0.75))
+			for _ in 0..<moves
+			{
+				let newPosition = CGPointMake(self.position.x + vector.x / CGFloat(moves), self.position.y + vector.y / CGFloat(moves))
+				if collideAt(newPosition, creatureArray: creatureArray)
+				{
+					return
+				}
+				self.position = newPosition
+			}
+		}
+		else
+		{
+			self.position = CGPointMake(self.position.x + vector.x, self.position.y + vector.y)
+		}
+	}
+	
+	func update(elapsed:CGFloat, creatureArray:[Creature]? = nil)
 	{
 		//TODO: do all things that aren't affected by stun here
 		if (knockbackLength > 0)
 		{
 			let knockbackLengthUse = min(elapsed, knockbackLength)
-			position = CGPointMake(position.x + cos(knockbackDirection) * knockbackLengthUse * knockbackStrength, position.y + sin(knockbackDirection) * knockbackLengthUse * knockbackStrength)
+			moveInner(CGPointMake(cos(knockbackDirection) * knockbackLengthUse * knockbackStrength, sin(knockbackDirection) * knockbackLengthUse * knockbackStrength), creatureArray: creatureArray)
 			
 			knockbackLength = max(0, knockbackLength - elapsed)
 		}
@@ -122,7 +181,7 @@ class Creature
 		accelDirection = nil
 		
 		//move based on your movement acceleration
-		position = CGPointMake(position.x + moveVector.x * elapsed, position.y + moveVector.y * elapsed)
+		moveInner(CGPointMake(moveVector.x * elapsed, moveVector.y * elapsed), creatureArray: creatureArray)
 	}
 	
 	func takeHit(damage:Int, direction:CGFloat, knockback:CGFloat, knockbackLength:CGFloat, stun:CGFloat)
@@ -137,6 +196,14 @@ class Creature
 		if (knockbackLength > 0)
 		{
 			self.moveVector = CGPointMake(0, 0)
+		}
+	}
+	
+	func move(direction:CGFloat)
+	{
+		if self.attackTimer == nil && self.attackCooldown == nil
+		{
+			accelDirection = direction
 		}
 	}
 	

@@ -12,12 +12,16 @@ import XCTest
 class CreatureTests: XCTestCase {
 	
 	var creature:Creature!
+	var otherCreature:Creature!
+	var creatureArray:[Creature]!
 	
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
 		
 		creature = Creature(position: CGPointMake(100, 100), type: "testman")
+		otherCreature = Creature(position: CGPointMake(105, 100), type: "testman")
+		creatureArray = [creature, otherCreature]
     }
     
     override func tearDown() {
@@ -31,6 +35,14 @@ class CreatureTests: XCTestCase {
 		XCTAssertEqual(creature.position.x, 100)
 		XCTAssertEqual(creature.position.y, 100)
 		XCTAssertEqual(creature.health, 3)
+	}
+	
+	//test misc things
+	
+	func testCollidePoint()
+	{
+		XCTAssertTrue(creature.collidePoint(CGPointMake(100, 100)))
+		XCTAssertFalse(creature.collidePoint(CGPointMake(110, 100)))
 	}
 	
 	//test the movement system
@@ -107,9 +119,22 @@ class CreatureTests: XCTestCase {
 		XCTAssertLessThan(creature.position.y, 100)
 	}
 	
+	func testNoMoveIntoPerson()
+	{
+		creature.move(0)
+		creature.update(1, creatureArray: creatureArray)
+		XCTAssertEqual(creature.position.x, 100)
+	}
 	
 	
 	//take attack tests
+	
+	func testNoKnockbackIntoPerson()
+	{
+		creature.takeHit(0, direction: 0, knockback: 100, knockbackLength: 1, stun: 0)
+		creature.update(1, creatureArray: creatureArray)
+		XCTAssertEqual(creature.position.x, 100)
+	}
 	
 	func testTakeDamage()
 	{
@@ -232,5 +257,25 @@ class CreatureTests: XCTestCase {
 		}
 		creature.attack()
 		XCTAssertNil(creature.attackTimer)
+	}
+	
+	func testNoMovingWhileAttacking()
+	{
+		creature.attack()
+		creature.move(0)
+		creature.update(0.1)
+		XCTAssertEqual(creature.position.x, 100)
+	}
+	
+	func testNoMovingWhileCooldown()
+	{
+		creature.attack()
+		while creature.attackCooldown == nil
+		{
+			creature.update(0.1)
+		}
+		creature.move(0)
+		creature.update(0.1)
+		XCTAssertEqual(creature.position.x, 100)
 	}
 }
