@@ -19,6 +19,7 @@ class Creature
 	//attacking variables
 	var attackTimer:CGFloat?
 	var attackCooldown:CGFloat?
+	var facingDirection:CGFloat
 	
 	//private variables
 	
@@ -36,6 +37,9 @@ class Creature
 	{
 		self.position = position
 		self.health = 3
+		
+		//set starting facing direction
+		self.facingDirection = 0
 	}
 	
 	private func collideAt(point:CGPoint, creatureArray:[Creature]) -> Bool
@@ -85,7 +89,8 @@ class Creature
 				return
 			}
 			
-			let moves:Int = Int(ceil(length / 0.75))
+			let moveInterval:CGFloat = 0.75
+			let moves:Int = Int(ceil(length / moveInterval))
 			for _ in 0..<moves
 			{
 				let newPosition = CGPointMake(self.position.x + vector.x / CGFloat(moves), self.position.y + vector.y / CGFloat(moves))
@@ -99,6 +104,55 @@ class Creature
 		else
 		{
 			self.position = CGPointMake(self.position.x + vector.x, self.position.y + vector.y)
+		}
+	}
+	
+	private func unleashAttack(creatureArray:[Creature]?)
+	{
+		if let creatureArray = creatureArray
+		{
+			//check to see if anyone is in the arc
+			for creature in creatureArray
+			{
+				if !(creature === self)
+				{
+					let xDif = creature.position.x - position.x
+					let yDif = creature.position.y - position.y
+					
+					//get
+					let range:CGFloat = 10
+					let angularRange:CGFloat = CGFloat(M_PI) / 2
+					
+					//are you in range?
+					let size:CGFloat = 5
+					let theirSize:CGFloat = 5
+					let distance = sqrt(xDif*xDif + yDif*yDif)
+					
+					if distance <= range + size + theirSize
+					{
+						//find the angle difference, to see if they are in front of you
+						let angle = atan2(yDif, xDif)
+						
+						var angleDif = angle - facingDirection
+						if angleDif < -CGFloat(M_PI)
+						{
+							angleDif += CGFloat(M_PI) * 2
+						}
+						else if angleDif > CGFloat(M_PI)
+						{
+							angleDif -= CGFloat(M_PI) * 2
+						}
+						
+						print("\(angleDif) vs \(angularRange)")
+						
+						if abs(angleDif) < angularRange
+						{
+							//they're in range and in angle, so they take a hit
+							creature.takeHit(1, direction: facingDirection, knockback: 10.0, knockbackLength: 1.0, stun: 1.0)
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -133,8 +187,7 @@ class Creature
 			self.attackTimer = attackTimer + attackSpeed * elapsed
 			if self.attackTimer! >= 1
 			{
-				//TODO: unleash attack
-				
+				unleashAttack(creatureArray)
 				self.attackTimer = nil
 				self.attackCooldown = 0
 			}
@@ -204,6 +257,7 @@ class Creature
 		if self.attackTimer == nil && self.attackCooldown == nil
 		{
 			accelDirection = direction
+			facingDirection = direction
 		}
 	}
 	

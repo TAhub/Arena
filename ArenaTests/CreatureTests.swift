@@ -230,6 +230,31 @@ class CreatureTests: XCTestCase {
 		XCTAssertNil(creature.attackCooldown)
 	}
 	
+	func testAttackHitting()
+	{
+		creature.attack()
+		creature.update(100, creatureArray: creatureArray)
+		XCTAssertEqual(otherCreature.health, 2)
+	}
+	
+	func testAttackOutOfRange()
+	{
+		otherCreature.move(0)
+		otherCreature.update(10)
+		creature.attack()
+		creature.update(100, creatureArray: creatureArray)
+		XCTAssertEqual(otherCreature.health, 3)
+	}
+	
+	func testAttackOutOfArc()
+	{
+		otherCreature.move(CGFloat(M_PI))
+		otherCreature.update(1.5)
+		creature.attack()
+		creature.update(100, creatureArray: creatureArray)
+		XCTAssertEqual(otherCreature.health, 3)
+	}
+	
 	func testNoAttackWhileStunned()
 	{
 		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 1.0)
