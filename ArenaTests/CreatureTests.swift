@@ -265,6 +265,14 @@ class CreatureTests: XCTestCase {
 		XCTAssertNotNil(creature.attackTimer)
 	}
 	
+	func testStunDoesntStopAttack()
+	{
+		creature.attack()
+		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 100)
+		creature.update(50)
+		XCTAssertNil(creature.attackTimer)
+	}
+	
 	func testNoAttackWhileAttacking()
 	{
 		creature.attack()

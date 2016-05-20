@@ -158,14 +158,7 @@ class Creature
 	
 	func update(elapsed:CGFloat, creatureArray:[Creature]? = nil)
 	{
-		//TODO: do all things that aren't affected by stun here
-		if (knockbackLength > 0)
-		{
-			let knockbackLengthUse = min(elapsed, knockbackLength)
-			moveInner(CGPointMake(cos(knockbackDirection) * knockbackLengthUse * knockbackStrength, sin(knockbackDirection) * knockbackLengthUse * knockbackStrength), creatureArray: creatureArray)
-			
-			knockbackLength = max(0, knockbackLength - elapsed)
-		}
+		preStunUpdate(elapsed, creatureArray: creatureArray)
 		
 		//remove stun from elapsed
 		var elapsed = elapsed
@@ -178,6 +171,20 @@ class Creature
 		{
 			elapsed -= stun
 			stun = 0
+		}
+		
+		postStunUpdate(elapsed, creatureArray: creatureArray)
+	}
+	
+	private func preStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?)
+	{
+		//apply knockback
+		if (knockbackLength > 0)
+		{
+			let knockbackLengthUse = min(elapsed, knockbackLength)
+			moveInner(CGPointMake(cos(knockbackDirection) * knockbackLengthUse * knockbackStrength, sin(knockbackDirection) * knockbackLengthUse * knockbackStrength), creatureArray: creatureArray)
+			
+			knockbackLength = max(0, knockbackLength - elapsed)
 		}
 		
 		//attack progress
@@ -201,9 +208,10 @@ class Creature
 				self.attackCooldown = nil
 			}
 		}
-		
-		//TODO: do all things that are affected by stun here
-		
+	}
+	
+	private func postStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?)
+	{
 		//accelerate
 		if let accelDirection = accelDirection
 		{
