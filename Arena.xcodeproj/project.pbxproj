@@ -18,6 +18,7 @@
 		E44088AA1CF3B3930095AB4A /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088A91CF3B3930095AB4A /* GameTests.swift */; };
 		E44088AC1CF3B4080095AB4A /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088AB1CF3B4080095AB4A /* Game.swift */; };
 		E44088B01CF3BFC20095AB4A /* CreatureDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088AF1CF3BFC20095AB4A /* CreatureDrawer.swift */; };
+		E44088B21CF3C76C0095AB4A /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088B11CF3C76C0095AB4A /* GameScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		E44088A91CF3B3930095AB4A /* GameTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
 		E44088AB1CF3B4080095AB4A /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		E44088AF1CF3BFC20095AB4A /* CreatureDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatureDrawer.swift; sourceTree = "<group>"; };
+		E44088B11CF3C76C0095AB4A /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 		E4386EEA1CEC0D9F00615DB5 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E44088B11CF3C76C0095AB4A /* GameScene.swift */,
 				E4310CB31CE3FB8500C45BAB /* ViewController.swift */,
 				E44088AF1CF3BFC20095AB4A /* CreatureDrawer.swift */,
 			);
@@ -300,6 +303,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E44088B21CF3C76C0095AB4A /* GameScene.swift in Sources */,
 				E4310CB41CE3FB8500C45BAB /* ViewController.swift in Sources */,
 				E44088B01CF3BFC20095AB4A /* CreatureDrawer.swift in Sources */,
 				E4310CB21CE3FB8500C45BAB /* AppDelegate.swift in Sources */,
