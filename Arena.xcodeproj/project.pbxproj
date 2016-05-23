@@ -15,6 +15,9 @@
 		E4310CD21CE3FB8500C45BAB /* ArenaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CD11CE3FB8500C45BAB /* ArenaUITests.swift */; };
 		E4310CE21CE3FBF200C45BAB /* Creature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CE11CE3FBF200C45BAB /* Creature.swift */; };
 		E4310CE41CE3FD7F00C45BAB /* CreatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */; };
+		E44088AA1CF3B3930095AB4A /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088A91CF3B3930095AB4A /* GameTests.swift */; };
+		E44088AC1CF3B4080095AB4A /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088AB1CF3B4080095AB4A /* Game.swift */; };
+		E44088B01CF3BFC20095AB4A /* CreatureDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088AF1CF3BFC20095AB4A /* CreatureDrawer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		E4310CD31CE3FB8500C45BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4310CE11CE3FBF200C45BAB /* Creature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Creature.swift; sourceTree = "<group>"; };
 		E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatureTests.swift; sourceTree = "<group>"; };
+		E44088A91CF3B3930095AB4A /* GameTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
+		E44088AB1CF3B4080095AB4A /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		E44088AF1CF3BFC20095AB4A /* CreatureDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatureDrawer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,7 @@
 		E4310CC51CE3FB8500C45BAB /* ArenaTests */ = {
 			isa = PBXGroup;
 			children = (
+				E44088A91CF3B3930095AB4A /* GameTests.swift */,
 				E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */,
 				E4310CC81CE3FB8500C45BAB /* Info.plist */,
 			);
@@ -128,6 +135,7 @@
 		E4386EE91CEC0D9800615DB5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E44088AB1CF3B4080095AB4A /* Game.swift */,
 				E4310CE11CE3FBF200C45BAB /* Creature.swift */,
 			);
 			name = Model;
@@ -137,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				E4310CB31CE3FB8500C45BAB /* ViewController.swift */,
+				E44088AF1CF3BFC20095AB4A /* CreatureDrawer.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -292,8 +301,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4310CB41CE3FB8500C45BAB /* ViewController.swift in Sources */,
+				E44088B01CF3BFC20095AB4A /* CreatureDrawer.swift in Sources */,
 				E4310CB21CE3FB8500C45BAB /* AppDelegate.swift in Sources */,
 				E4310CE21CE3FBF200C45BAB /* Creature.swift in Sources */,
+				E44088AC1CF3B4080095AB4A /* Game.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4310CE41CE3FD7F00C45BAB /* CreatureTests.swift in Sources */,
+				E44088AA1CF3B3930095AB4A /* GameTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

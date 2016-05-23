@@ -215,11 +215,11 @@ class Creature
 		//accelerate
 		if let accelDirection = accelDirection
 		{
-			let accel:CGFloat = 10
+			let accel:CGFloat = 200
 			moveVector = CGPointMake(moveVector.x + cos(accelDirection) * elapsed * accel, moveVector.y + sin(accelDirection) * elapsed * accel)
 			
 			//apply the max speed
-			let maxSpeed:CGFloat = 20
+			let maxSpeed:CGFloat = 75
 			let totalSpeed = CGFloat(sqrtf(Float(moveVector.x * moveVector.x + moveVector.y * moveVector.y)))
 			if (totalSpeed > maxSpeed)
 			{
@@ -228,7 +228,7 @@ class Creature
 		}
 		else //decelerate
 		{
-			let decel:CGFloat = 15
+			let decel:CGFloat = 300
 			let totalSpeed = CGFloat(sqrtf(Float(moveVector.x * moveVector.x + moveVector.y * moveVector.y)))
 			if (totalSpeed <= decel * elapsed)
 			{

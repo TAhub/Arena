@@ -7,19 +7,25 @@
 //
 
 import UIKit
+import SpriteKit
 
 class ViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
+		
+		
+		let skView = view as! SKView
+		
+		skView.showsFPS = true
+		skView.showsNodeCount = true
+		skView.ignoresSiblingOrder = true
+		
+		let game = Game()
+		game.addPlayer(Creature(position: CGPointMake(200, 200), type: "testman"))
+		let scene = GameScene(size: view.bounds.size)
+		scene.game = game
+		skView.presentScene(scene)
 	}
-
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
-
-
 }
 
