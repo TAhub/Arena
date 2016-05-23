@@ -13,13 +13,13 @@ class Creature
 	//public variables
 	
 	//main variables
-	var position:CGPoint
-	var health:Int
+	internal var position:CGPoint
+	internal var health:Int
 	
 	//attacking variables
-	var attackTimer:CGFloat?
-	var attackCooldown:CGFloat?
-	var facingDirection:CGFloat
+	internal var attackTimer:CGFloat?
+	internal var attackCooldown:CGFloat?
+	internal var facingDirection:CGFloat
 	
 	//private variables
 	
