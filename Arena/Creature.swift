@@ -249,6 +249,11 @@ class Creature
 	
 	private func postStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?)
 	{
+		if elapsed == 0
+		{
+			accelDirection = nil
+		}
+		
 		//accelerate
 		if let accelDirection = accelDirection
 		{

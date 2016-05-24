@@ -126,10 +126,6 @@ class CreatureTests: XCTestCase {
 		XCTAssertEqual(creature.drawPosition.x, 100)
 	}
 	
-	//TODO: test the walking animation to make sure it works reasonably well
-	//cases to test: starts with walk1, then does walk2
-	//				doesn't use walk animation if you are sliding while attacking
-	//				goes away the moment you stop accelerating (so you just skid to a stop) maybe? check only one to see what that looks like
 	func testMoveAnimationProgression()
 	{
 		//test the walking animation goes in the following order: walk1, neutral, walk2, neutral, *repeat*
@@ -156,6 +152,21 @@ class CreatureTests: XCTestCase {
 		//purposefully DON'T order the creature to walk
 		creature.update(0.01)
 		XCTAssertTrue(creatureNeutral)
+	}
+	
+	func testNoMoveAnimationWhileStunned()
+	{
+		creature.move(0)
+		creature.takeHit(0, direction: 0, knockback: 0.0, knockbackLength: 0.0, stun: 1.0)
+		creature.update(0.1)
+		XCTAssertFalse(creatureWalkingOne)
+	}
+	
+	func testNoMoveAnimationForKnockback()
+	{
+		creature.takeHit(0, direction: 0, knockback: 10.0, knockbackLength: 1.0, stun: 0.0)
+		creature.update(0.1)
+		XCTAssertFalse(creatureWalkingOne)
 	}
 
 	
