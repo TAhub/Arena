@@ -30,26 +30,32 @@ class GameTests: XCTestCase {
 	{
 		game.setMove(0)
 		game.update(1.0)
-		let oldX = game.player!.position.x
+		let oldX = game.player!.drawPosition.x
 		XCTAssertNotEqual(oldX, 100)
 		game.update(1.0)
-		XCTAssertNotEqual(oldX, game.player!.position.x)
+		XCTAssertNotEqual(oldX, game.player!.drawPosition.x)
 	}
 	
 	func testControlStickCanCancel()
 	{
 		game.setMove(0)
 		game.update(1.0)
-		let oldX = game.player!.position.x
+		let oldX = game.player!.drawPosition.x
 		XCTAssertNotEqual(oldX, 100)
 		game.setMove(nil)
 		game.update(1.0)
-		XCTAssertEqual(oldX, game.player!.position.x)
+		XCTAssertEqual(oldX, game.player!.drawPosition.x)
 	}
 	
 	func testControlAttack()
 	{
 		game.attack()
-		XCTAssertNotNil(game.player!.attackTimer)
+		XCTAssertTrue(creatureAttacking)
+	}
+	
+	//MARK: helper functions
+	var creatureAttacking:Bool
+	{
+		return game.player!.animSuffix == "_swing1"
 	}
 }

@@ -13,19 +13,19 @@ class Creature
 	//MARK: public variables
 	
 	//main variables
-	internal var position:CGPoint
 	internal var health:Int
-	
-	//attacking variables
-	internal var attackTimer:CGFloat?
-	internal var attackCooldown:CGFloat?
-	internal var facingDirection:CGFloat
 	
 	//MARK: private variables
 	
 	//movement variables
+	private var position:CGPoint
 	private var moveVector:CGPoint = CGPointMake(0, 0)
 	private var accelDirection:CGFloat?
+	
+	//attacking variables
+	private var attackTimer:CGFloat?
+	private var attackCooldown:CGFloat?
+	private var facingDirection:CGFloat
 	
 	//stun/knockback variables
 	private var stun:CGFloat = 0
@@ -42,6 +42,30 @@ class Creature
 		
 		//set starting facing direction
 		self.facingDirection = 0
+	}
+	
+	//MARK: accessors
+	
+	var drawPosition:CGPoint
+	{
+		//TODO: account for hovering, falling, and other things that change z without changing y here
+		return position;
+	}
+	
+	var animSuffix:NSString
+	{
+		if (attackTimer != nil)
+		{
+			return "_swing1";
+		}
+		else if (attackCooldown != nil)
+		{
+			return "_swing2";
+		}
+		else
+		{
+			return "_neutral";
+		}
 	}
 	
 	//MARK: command code

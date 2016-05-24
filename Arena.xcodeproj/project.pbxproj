@@ -12,7 +12,6 @@
 		E4310CB71CE3FB8500C45BAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4310CB51CE3FB8500C45BAB /* Main.storyboard */; };
 		E4310CB91CE3FB8500C45BAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4310CB81CE3FB8500C45BAB /* Assets.xcassets */; };
 		E4310CBC1CE3FB8500C45BAB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4310CBA1CE3FB8500C45BAB /* LaunchScreen.storyboard */; };
-		E4310CD21CE3FB8500C45BAB /* ArenaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CD11CE3FB8500C45BAB /* ArenaUITests.swift */; };
 		E4310CE21CE3FBF200C45BAB /* Creature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CE11CE3FBF200C45BAB /* Creature.swift */; };
 		E4310CE41CE3FD7F00C45BAB /* CreatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */; };
 		E44088AA1CF3B3930095AB4A /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088A91CF3B3930095AB4A /* GameTests.swift */; };
@@ -49,7 +48,6 @@
 		E4310CC21CE3FB8500C45BAB /* ArenaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArenaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4310CC81CE3FB8500C45BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4310CCD1CE3FB8500C45BAB /* ArenaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArenaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4310CD11CE3FB8500C45BAB /* ArenaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaUITests.swift; sourceTree = "<group>"; };
 		E4310CD31CE3FB8500C45BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4310CE11CE3FBF200C45BAB /* Creature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Creature.swift; sourceTree = "<group>"; };
 		E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatureTests.swift; sourceTree = "<group>"; };
@@ -128,7 +126,6 @@
 		E4310CD01CE3FB8500C45BAB /* ArenaUITests */ = {
 			isa = PBXGroup;
 			children = (
-				E4310CD11CE3FB8500C45BAB /* ArenaUITests.swift */,
 				E4310CD31CE3FB8500C45BAB /* Info.plist */,
 			);
 			path = ArenaUITests;
@@ -325,7 +322,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4310CD21CE3FB8500C45BAB /* ArenaUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

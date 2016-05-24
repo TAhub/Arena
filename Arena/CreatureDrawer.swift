@@ -31,6 +31,6 @@ class CreatureDrawer
 	
 	func update()
 	{
-		myRootNode.position = creature.position
+		myRootNode.position = creature.drawPosition
 	}
 }

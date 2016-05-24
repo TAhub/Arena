@@ -32,12 +32,12 @@ class CreatureTests: XCTestCase {
 	func testNoChangeAtRest()
 	{
 		creature.update(100)
-		XCTAssertEqual(creature.position.x, 100)
-		XCTAssertEqual(creature.position.y, 100)
+		XCTAssertEqual(creature.drawPosition.x, 100)
+		XCTAssertEqual(creature.drawPosition.y, 100)
 		XCTAssertEqual(creature.health, 3)
 	}
 	
-	//test misc things
+	//MARK: misc tests
 	
 	func testCollidePoint()
 	{
@@ -45,18 +45,18 @@ class CreatureTests: XCTestCase {
 		XCTAssertFalse(creature.collidePoint(CGPointMake(110, 100)))
 	}
 	
-	//test the movement system
+	//MARK: movement system tests
 	
 	func testMoveParabolic()
 	{
 		//I don't know exactly WHAT the result will be, but I know you will be accelerating if you keep doing move overs
 		creature.move(0)
 		creature.update(0.1)
-		let xSpeed1 = creature.position.x - 100
-		let oldX = creature.position.x
+		let xSpeed1 = creature.drawPosition.x - 100
+		let oldX = creature.drawPosition.x
 		creature.move(0)
 		creature.update(0.1)
-		let xSpeed2 = creature.position.x - oldX
+		let xSpeed2 = creature.drawPosition.x - oldX
 		XCTAssertGreaterThan(xSpeed2, xSpeed1)
 	}
 	
@@ -65,13 +65,13 @@ class CreatureTests: XCTestCase {
 		//I don't know what the max speed will be, just that I want one, and that 100 seconds is probably way over any kind of reasonable max
 		creature.move(0)
 		creature.update(100.0)
-		let oldX1 = creature.position.x
+		let oldX1 = creature.drawPosition.x
 		creature.move(0)
 		creature.update(1.0)
-		let oldX2 = creature.position.x
+		let oldX2 = creature.drawPosition.x
 		creature.move(0)
 		creature.update(1.0)
-		XCTAssertEqual(creature.position.x - oldX2, oldX2 - oldX1)
+		XCTAssertEqual(creature.drawPosition.x - oldX2, oldX2 - oldX1)
 	}
 	
 	func testMoveDecel()
@@ -79,62 +79,66 @@ class CreatureTests: XCTestCase {
 		//again, I don't know how fast deceleration will be, just that I want it to happen
 		creature.move(0)
 		creature.update(100.0)
-		let oldX1 = creature.position.x
+		let oldX1 = creature.drawPosition.x
 		creature.move(0)
 		creature.update(1.0)
-		let oldX2 = creature.position.x
+		let oldX2 = creature.drawPosition.x
 		creature.update(1.0)
-		XCTAssertLessThan(creature.position.x - oldX2, oldX2 - oldX1)
+		XCTAssertLessThan(creature.drawPosition.x - oldX2, oldX2 - oldX1)
 	}
 	
 	func testMoveRight()
 	{
 		creature.move(0)
 		creature.update(0.2)
-		XCTAssertGreaterThan(creature.position.x, 100)
-		XCTAssertEqual(creature.position.y, 100)
+		XCTAssertGreaterThan(creature.drawPosition.x, 100)
+		XCTAssertEqual(creature.drawPosition.y, 100)
 	}
 	
 	func testMoveUp()
 	{
 		creature.move(CGFloat(M_PI) / 2)
 		creature.update(0.2)
-		XCTAssertEqual(creature.position.x, 100)
-		XCTAssertGreaterThan(creature.position.y, 100)
+		XCTAssertEqual(creature.drawPosition.x, 100)
+		XCTAssertGreaterThan(creature.drawPosition.y, 100)
 	}
 	
 	func testMoveLeft()
 	{
 		creature.move(CGFloat(M_PI))
 		creature.update(0.2)
-		print("position is \(creature.position)")
-		XCTAssertLessThan(creature.position.x, 100)
-		XCTAssertEqual(creature.position.y, 100)
+		XCTAssertLessThan(creature.drawPosition.x, 100)
+		XCTAssertEqual(creature.drawPosition.y, 100)
 	}
 	
 	func testMoveDown()
 	{
 		creature.move(3 * CGFloat(M_PI) / 2)
 		creature.update(0.2)
-		XCTAssertEqual(creature.position.x, 100)
-		XCTAssertLessThan(creature.position.y, 100)
+		XCTAssertEqual(creature.drawPosition.x, 100)
+		XCTAssertLessThan(creature.drawPosition.y, 100)
 	}
 	
 	func testNoMoveIntoPerson()
 	{
 		creature.move(0)
 		creature.update(1, creatureArray: creatureArray)
-		XCTAssertEqual(creature.position.x, 100)
+		XCTAssertEqual(creature.drawPosition.x, 100)
 	}
 	
+	//TODO: test the walking animation to make sure it works reasonably well
+	//cases to test: starts with walk1, then does walk2
+	//				doesn't use walk animation if you are sliding while attacking
+	//				goes away the moment you stop accelerating (so you just skid to a stop) maybe? check only one to see what that looks like
 	
-	//take attack tests
+	
+	//MARK: take attack tests
 	
 	func testNoKnockbackIntoPerson()
 	{
 		creature.takeHit(0, direction: 0, knockback: 100, knockbackLength: 1, stun: 0)
 		creature.update(1, creatureArray: creatureArray)
-		XCTAssertEqual(creature.position.x, 100)
+		XCTAssertEqual(creature.drawPosition.x, 100)
 	}
 	
 	func testTakeDamage()
@@ -148,7 +152,7 @@ class CreatureTests: XCTestCase {
 		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 1.0)
 		creature.move(0)
 		creature.update(1.0)
-		XCTAssertEqual(creature.position.x, 100)
+		XCTAssertEqual(creature.drawPosition.x, 100)
 	}
 	
 	func testStunPartialMove()
@@ -156,79 +160,74 @@ class CreatureTests: XCTestCase {
 		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 1.0)
 		creature.move(0)
 		creature.update(2.0)
-		XCTAssertGreaterThan(creature.position.x, 100)
+		XCTAssertGreaterThan(creature.drawPosition.x, 100)
 	}
 	
 	func testKnockback()
 	{
 		creature.takeHit(0, direction: 0, knockback: 10.0, knockbackLength: 1.0, stun: 0)
 		creature.update(1.0)
-		XCTAssertGreaterThan(creature.position.x, 100)
+		XCTAssertGreaterThan(creature.drawPosition.x, 100)
 	}
 	
 	func testKnockbackDuration()
 	{
 		creature.takeHit(0, direction: 0, knockback: 10.0, knockbackLength: 1.0, stun: 0)
 		creature.update(0.5)
-		XCTAssertTrue(creature.position.x > 100)
-		let oldX = creature.position.x
+		XCTAssertTrue(creature.drawPosition.x > 100)
+		let oldX = creature.drawPosition.x
 		creature.update(1.0)
-		XCTAssertGreaterThan(creature.position.x, oldX)
+		XCTAssertGreaterThan(creature.drawPosition.x, oldX)
 	}
 	
 	func testKnockbackOverride()
 	{
 		creature.takeHit(0, direction: 0, knockback: 10.0, knockbackLength: 1.0, stun: 0)
 		creature.update(0.5)
-		XCTAssertTrue(creature.position.x > 100)
+		XCTAssertTrue(creature.drawPosition.x > 100)
 		creature.takeHit(0, direction: CGFloat(M_PI) / 2, knockback: 10.0, knockbackLength: 1.0, stun: 0)
-		let oldX = creature.position.x
+		let oldX = creature.drawPosition.x
 		creature.update(1.0)
-		XCTAssertEqual(creature.position.x, oldX)
-		XCTAssertGreaterThan(creature.position.y, 100)
+		XCTAssertEqual(creature.drawPosition.x, oldX)
+		XCTAssertGreaterThan(creature.drawPosition.y, 100)
 	}
 	
 	func testKnockbackCancelsMove()
 	{
 		creature.move(0)
 		creature.update(100)
-		let oldX = creature.position.x
+		let oldX = creature.drawPosition.x
 		creature.takeHit(0, direction: CGFloat(M_PI) / 2, knockback: 10.0, knockbackLength: 1.0, stun: 0)
 		creature.update(1.0)
-		XCTAssertEqual(creature.position.x, oldX)
+		XCTAssertEqual(creature.drawPosition.x, oldX)
 	}
 	
 	
-	//attack tests
+	//MARK: attack tests
 	
-	func testAttackTimer()
+	func testAttackProgression()
 	{
-		//test to make sure that the attack timer starts at nil, is set to 0 when attacking, works its way up to 1, and then after a while returns to being nil
-		XCTAssertNil(creature.attackTimer)
+		//test to make sure you don't start out attacking, but you do end up attacking for a while after selecting attack
+		XCTAssertFalse(creatureAttacking)
 		creature.attack()
-		XCTAssertNotNil(creature.attackTimer)
-		XCTAssertEqual(creature.attackTimer ?? 999, 0)
-		creature.update(0.1)
-		XCTAssertNotNil(creature.attackTimer)
-		XCTAssertGreaterThan(creature.attackTimer ?? 999, 0)
-		XCTAssertLessThan(creature.attackTimer ?? 999, 1)
+		XCTAssertTrue(creatureAttacking)
 		creature.update(100)
-		XCTAssertNil(creature.attackTimer)
+		XCTAssertFalse(creatureAttacking)
 	}
 	
-	func testAttackCooldown()
+	func testAttackCooldownProgression()
 	{
-		//test to make sure that attack cooldown starts at nil, is set to 0 when attack timer is over, works up to 1, and then returns to nil
-		XCTAssertNil(creature.attackCooldown)
+		//test to make sure that attack cooldown happens after attacking ends
+		XCTAssertFalse(creatureInCooldown)
 		creature.attack()
-		XCTAssertNil(creature.attackCooldown)
-		while creature.attackTimer != nil
+		XCTAssertFalse(creatureInCooldown)
+		while creatureAttacking
 		{
 			creature.update(0.1)
 		}
-		XCTAssertNotNil(creature.attackCooldown)
+		XCTAssertTrue(creatureInCooldown)
 		creature.update(100)
-		XCTAssertNil(creature.attackCooldown)
+		XCTAssertFalse(creatureInCooldown)
 	}
 	
 	func testAttackHitting()
@@ -260,37 +259,30 @@ class CreatureTests: XCTestCase {
 	{
 		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 1.0)
 		creature.attack()
-		XCTAssertNil(creature.attackTimer)
+		XCTAssertFalse(creatureAttacking)
 		creature.update(100)
 		creature.attack()
-		XCTAssertNotNil(creature.attackTimer)
+		XCTAssertTrue(creatureAttacking)
 	}
 	
 	func testStunDoesntStopAttack()
 	{
 		creature.attack()
 		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 100)
-		creature.update(50)
-		XCTAssertNil(creature.attackTimer)
-	}
-	
-	func testNoAttackWhileAttacking()
-	{
-		creature.attack()
 		creature.update(0.1)
-		creature.attack()
-		XCTAssertNotEqual(creature.attackTimer ?? 0, 0)
+		XCTAssertTrue(creatureAttacking)
 	}
 	
 	func testNoAttackWhileInCooldown()
 	{
 		creature.attack()
-		while creature.attackCooldown == nil
+		while creatureAttacking
 		{
 			creature.update(0.1)
 		}
 		creature.attack()
-		XCTAssertNil(creature.attackTimer)
+		XCTAssertFalse(creatureAttacking)
+		
 	}
 	
 	func testNoMovingWhileAttacking()
@@ -298,18 +290,28 @@ class CreatureTests: XCTestCase {
 		creature.attack()
 		creature.move(0)
 		creature.update(0.1)
-		XCTAssertEqual(creature.position.x, 100)
+		XCTAssertEqual(creature.drawPosition.x, 100)
 	}
 	
 	func testNoMovingWhileCooldown()
 	{
 		creature.attack()
-		while creature.attackCooldown == nil
+		while creatureAttacking
 		{
 			creature.update(0.1)
 		}
 		creature.move(0)
 		creature.update(0.1)
-		XCTAssertEqual(creature.position.x, 100)
+		XCTAssertEqual(creature.drawPosition.x, 100)
+	}
+	
+	//MARK: helper functions
+	var creatureAttacking:Bool
+	{
+		return creature.animSuffix == "_swing1"
+	}
+	var creatureInCooldown:Bool
+	{
+		return creature.animSuffix == "_swing2"
 	}
 }
