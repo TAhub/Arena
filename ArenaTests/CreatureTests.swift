@@ -51,11 +51,11 @@ class CreatureTests: XCTestCase {
 	{
 		//I don't know exactly WHAT the result will be, but I know you will be accelerating if you keep doing move overs
 		creature.move(0)
-		creature.update(0.5)
+		creature.update(0.1)
 		let xSpeed1 = creature.position.x - 100
 		let oldX = creature.position.x
 		creature.move(0)
-		creature.update(0.5)
+		creature.update(0.1)
 		let xSpeed2 = creature.position.x - oldX
 		XCTAssertGreaterThan(xSpeed2, xSpeed1)
 	}
@@ -90,7 +90,7 @@ class CreatureTests: XCTestCase {
 	func testMoveRight()
 	{
 		creature.move(0)
-		creature.update(1)
+		creature.update(0.2)
 		XCTAssertGreaterThan(creature.position.x, 100)
 		XCTAssertEqual(creature.position.y, 100)
 	}
@@ -98,7 +98,7 @@ class CreatureTests: XCTestCase {
 	func testMoveUp()
 	{
 		creature.move(CGFloat(M_PI) / 2)
-		creature.update(1)
+		creature.update(0.2)
 		XCTAssertEqual(creature.position.x, 100)
 		XCTAssertGreaterThan(creature.position.y, 100)
 	}
@@ -106,7 +106,8 @@ class CreatureTests: XCTestCase {
 	func testMoveLeft()
 	{
 		creature.move(CGFloat(M_PI))
-		creature.update(1)
+		creature.update(0.2)
+		print("position is \(creature.position)")
 		XCTAssertLessThan(creature.position.x, 100)
 		XCTAssertEqual(creature.position.y, 100)
 	}
@@ -114,7 +115,7 @@ class CreatureTests: XCTestCase {
 	func testMoveDown()
 	{
 		creature.move(3 * CGFloat(M_PI) / 2)
-		creature.update(1)
+		creature.update(0.2)
 		XCTAssertEqual(creature.position.x, 100)
 		XCTAssertLessThan(creature.position.y, 100)
 	}
