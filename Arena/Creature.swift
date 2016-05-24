@@ -17,6 +17,9 @@ class Creature
 	
 	//MARK: private variables
 	
+	//main variables
+	private var stats:CreatureStats
+	
 	//movement variables
 	private var position:CGPoint
 	private var moveVector:CGPoint = CGPointMake(0, 0)
@@ -37,8 +40,9 @@ class Creature
 	
 	init(position:CGPoint, type:String)
 	{
+		self.stats = CreatureStats(type: type)
 		self.position = position
-		self.health = 3
+		self.health = stats.maxHealth
 		
 		//set starting facing direction
 		self.facingDirection = 0
@@ -106,31 +110,23 @@ class Creature
 	
 	func collidePoint(point:CGPoint) -> Bool
 	{
-		let size:CGFloat = 5
-		
 		let xDis:CGFloat = abs(point.x - position.x)
 		let yDis:CGFloat = abs(point.y - position.y)
 		let distance:CGFloat = sqrt(xDis * xDis + yDis * yDis)
-		return distance <= size
+		return distance <= stats.size
 	}
 	
 	private func collideAt(point:CGPoint, creatureArray:[Creature]) -> Bool
 	{
-		//get your size
-		let size:CGFloat = 5
-		
 		for creature in creatureArray
 		{
 			if !(creature === self)
 			{
-				//get their size
-				let theirSize:CGFloat = 5
-				
 				//how far away are you?
 				let xDis:CGFloat = abs(point.x - creature.position.x)
 				let yDis:CGFloat = abs(point.y - creature.position.y)
 				let distance:CGFloat = sqrt(xDis * xDis + yDis * yDis)
-				if (distance <= size + theirSize)
+				if (distance <= stats.size + creature.stats.size)
 				{
 					return true
 				}
@@ -212,11 +208,9 @@ class Creature
 					let angularRange:CGFloat = CGFloat(M_PI) / 2
 					
 					//are you in range?
-					let size:CGFloat = 5
-					let theirSize:CGFloat = 5
 					let distance = sqrt(xDif*xDif + yDif*yDif)
 					
-					if distance <= range + size + theirSize
+					if distance <= range + stats.size + creature.stats.size
 					{
 						//find the angle difference, to see if they are in front of you
 						let angle = atan2(yDif, xDif)
@@ -247,28 +241,25 @@ class Creature
 		//accelerate
 		if let accelDirection = accelDirection
 		{
-			let accel:CGFloat = 200
-			moveVector = CGPointMake(moveVector.x + cos(accelDirection) * elapsed * accel, moveVector.y + sin(accelDirection) * elapsed * accel)
+			moveVector = CGPointMake(moveVector.x + cos(accelDirection) * elapsed * stats.accelRate, moveVector.y + sin(accelDirection) * elapsed * stats.accelRate)
 			
-			//apply the max speed
-			let maxSpeed:CGFloat = 75
+			//cap the speed to the max speed
 			let totalSpeed = CGFloat(sqrtf(Float(moveVector.x * moveVector.x + moveVector.y * moveVector.y)))
-			if (totalSpeed > maxSpeed)
+			if (totalSpeed > stats.maxSpeed)
 			{
-				moveVector = CGPointMake(moveVector.x * maxSpeed / totalSpeed, moveVector.y * maxSpeed / totalSpeed)
+				moveVector = CGPointMake(moveVector.x * stats.maxSpeed / totalSpeed, moveVector.y * stats.maxSpeed / totalSpeed)
 			}
 		}
 		else //decelerate
 		{
-			let decel:CGFloat = 300
 			let totalSpeed = CGFloat(sqrtf(Float(moveVector.x * moveVector.x + moveVector.y * moveVector.y)))
-			if (totalSpeed <= decel * elapsed)
+			if (totalSpeed <= stats.decelRate * elapsed)
 			{
 				moveVector = CGPointMake(0, 0)
 			}
 			else
 			{
-				moveVector = CGPointMake(moveVector.x - moveVector.x * decel * elapsed / totalSpeed, moveVector.y - moveVector.y * decel * elapsed / totalSpeed)
+				moveVector = CGPointMake(moveVector.x - moveVector.x * stats.decelRate * elapsed / totalSpeed, moveVector.y - moveVector.y * stats.decelRate * elapsed / totalSpeed)
 			}
 		}
 		accelDirection = nil
