@@ -24,6 +24,8 @@ class Creature
 	private var position:CGPoint
 	private var moveVector:CGPoint = CGPointMake(0, 0)
 	private var accelDirection:CGFloat?
+	private var moveTimer:CGFloat?
+	internal static let moveTimerRate:CGFloat = 1.5
 	
 	//attacking variables
 	private var attackTimer:CGFloat?
@@ -58,18 +60,26 @@ class Creature
 	
 	var animSuffix:NSString
 	{
-		if (attackTimer != nil)
+		if attackTimer != nil
 		{
 			return "_swing1";
 		}
-		else if (attackCooldown != nil)
+		else if attackCooldown != nil
 		{
 			return "_swing2";
 		}
-		else
+		if let moveTimer = moveTimer
 		{
-			return "_neutral";
+			if moveTimer < 0.25
+			{
+				return "_walk1";
+			}
+			else if moveTimer >= 0.5 && moveTimer < 0.75
+			{
+				return "_walk2";
+			}
 		}
+		return "_neutral";
 	}
 	
 	//MARK: command code
@@ -80,6 +90,7 @@ class Creature
 		{
 			accelDirection = direction
 			facingDirection = direction
+			moveTimer = moveTimer ?? 0
 		}
 	}
 	
@@ -249,6 +260,16 @@ class Creature
 			{
 				moveVector = CGPointMake(moveVector.x * stats.maxSpeed / totalSpeed, moveVector.y * stats.maxSpeed / totalSpeed)
 			}
+			
+			if var moveTimer = moveTimer
+			{
+				moveTimer += elapsed * Creature.moveTimerRate
+				while moveTimer >= 1
+				{
+					moveTimer -= 1
+				}
+				self.moveTimer = moveTimer
+			}
 		}
 		else //decelerate
 		{
@@ -261,6 +282,8 @@ class Creature
 			{
 				moveVector = CGPointMake(moveVector.x - moveVector.x * stats.decelRate * elapsed / totalSpeed, moveVector.y - moveVector.y * stats.decelRate * elapsed / totalSpeed)
 			}
+			
+			moveTimer = nil
 		}
 		accelDirection = nil
 		

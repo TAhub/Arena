@@ -130,7 +130,34 @@ class CreatureTests: XCTestCase {
 	//cases to test: starts with walk1, then does walk2
 	//				doesn't use walk animation if you are sliding while attacking
 	//				goes away the moment you stop accelerating (so you just skid to a stop) maybe? check only one to see what that looks like
+	func testMoveAnimationProgression()
+	{
+		//test the walking animation goes in the following order: walk1, neutral, walk2, neutral, *repeat*
+		creature.move(0)
+		XCTAssertTrue(creatureWalkingOne)
+		creature.update(0.25 / Creature.moveTimerRate)
+		XCTAssertTrue(creatureNeutral)
+		creature.move(0)
+		creature.update(0.25 / Creature.moveTimerRate)
+		XCTAssertTrue(creatureWalkingTwo)
+		creature.move(0)
+		creature.update(0.25 / Creature.moveTimerRate)
+		XCTAssertTrue(creatureNeutral)
+		creature.move(0)
+		creature.update(0.25 / Creature.moveTimerRate)
+		XCTAssertTrue(creatureWalkingOne)
+	}
 	
+	func testMoveAnimationEndsInstantly()
+	{
+		creature.move(0)
+		creature.update(0.01)
+		XCTAssertTrue(creatureWalkingOne)
+		//purposefully DON'T order the creature to walk
+		creature.update(0.01)
+		XCTAssertTrue(creatureNeutral)
+	}
+
 	
 	//MARK: take attack tests
 	
@@ -313,5 +340,17 @@ class CreatureTests: XCTestCase {
 	var creatureInCooldown:Bool
 	{
 		return creature.animSuffix == "_swing2"
+	}
+	var creatureWalkingOne:Bool
+	{
+		return creature.animSuffix == "_walk1"
+	}
+	var creatureWalkingTwo:Bool
+	{
+		return creature.animSuffix == "_walk2"
+	}
+	var creatureNeutral:Bool
+	{
+		return creature.animSuffix == "_neutral"
 	}
 }
