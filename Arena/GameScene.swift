@@ -14,8 +14,8 @@ class GameScene: SKScene {
 	private var lastTime:NSTimeInterval?
 	private var creatureDrawers = [CreatureDrawer]()
 	
-	private let thumbstickPosition = CGPointMake(80, 80)
-	private let thumbstickSize:CGFloat = 60
+	private var thumbstick:PsuedoButton!
+	private var attackButton:PsuedoButton!
 	
 	override func didMoveToView(view: SKView)
 	{
@@ -26,44 +26,46 @@ class GameScene: SKScene {
 		}
 		
 		//add the thumbstick
-		let thumbstick:SKNode = SKShapeNode(circleOfRadius: thumbstickSize)
-		thumbstick.position = thumbstickPosition
-		self.addChild(thumbstick)
+		thumbstick = PsuedoButton(size: 60, position: CGPointMake(80, 80), comparisonNode: self, touchClosure: { (angle) in
+			self.game.setMove(angle)
+			}, touchMoveClosure: { (angle) in
+				self.game.setMove(angle)
+			}, touchEndClosure: { () in
+				self.game.setMove(nil)
+		})
+		let thumbstickNode:SKNode = SKShapeNode(circleOfRadius: thumbstick.size)
+		thumbstickNode.position = thumbstick.position
+		self.addChild(thumbstickNode)
+		
+		//add the attack button
+		attackButton = PsuedoButton(size: 30, position: CGPointMake(view.bounds.width - 50, 50), comparisonNode: self, touchClosure: { (_) in
+			//TODO: make the button depress
+			self.game.attack()
+			print("ATTACK")
+			}, touchMoveClosure: nil, touchEndClosure: { () in
+				//TODO: make the button pop back up
+		})
+		let attackButtonNode:SKNode = SKShapeNode(circleOfRadius: attackButton.size)
+		attackButtonNode.position = attackButton.position
+		self.addChild(attackButtonNode)
 	}
 	
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)
 	{
-		game.setMove(nil)
+		thumbstick.touchesEnded(touches)
+		attackButton.touchesEnded(touches)
 	}
 	
 	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?)
 	{
-		for touch in touches
-		{
-			thumbstickTouch(touch)
-		}
+		thumbstick.touchesMoved(touches)
+		attackButton.touchesMoved(touches)
 	}
 	
-	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-		for touch in touches
-		{
-			thumbstickTouch(touch)
-		}
-	}
-	
-	private func thumbstickTouch(touch:UITouch)
+	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
 	{
-		let touchPosition = touch.locationInNode(self)
-		
-		//is it in the tumbstick?
-		let xDis = touchPosition.x - thumbstickPosition.x
-		let yDis = touchPosition.y - thumbstickPosition.y
-		let distance = sqrt(xDis*xDis + yDis*yDis)
-		if distance <= thumbstickSize
-		{
-			let angle = atan2(yDis, xDis)
-			game.setMove(angle)
-		}
+		thumbstick.touchesBegan(touches)
+		attackButton.touchesBegan(touches)
 	}
 	
 	override func update(currentTime: NSTimeInterval)
