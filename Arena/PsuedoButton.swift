@@ -18,7 +18,6 @@ class PsuedoButton
 	let touchEndClosure:(()->())?
 	
 	private var savedTouch:UITouch?
-	private var lastAngle:CGFloat = 0
 	
 	init(size:CGFloat, position:CGPoint, comparisonNode:SKNode, touchClosure:((CGFloat)->())?, touchMoveClosure:((CGFloat)->())?, touchEndClosure:(()->())?)
 	{
@@ -55,26 +54,27 @@ class PsuedoButton
 	{
 		for touch in touches
 		{
-			let wasInside = findAngleIfInside(touch)
-			
-			if wasInside && savedTouch != nil && savedTouch! == touch
+			if savedTouch != nil && savedTouch! == touch
 			{
-				//the saved touch moved around inside the button
-				
-				if let touchMoveClosure = touchMoveClosure
+				if let angle = findAngleIfInside(touch)
 				{
-					touchMoveClosure(lastAngle)
+					//the saved touch moved around inside the button
+					
+					if let touchMoveClosure = touchMoveClosure
+					{
+						touchMoveClosure(angle)
+					}
 				}
-			}
-			else if !wasInside && savedTouch != nil && savedTouch! == touch
-			{
-				//the saved touch moved outside the button
-				
-				self.savedTouch = nil
-				
-				if let touchEndClosure = touchEndClosure
+				else
 				{
-					touchEndClosure()
+					//the saved touch moved outside the button
+					
+					self.savedTouch = nil
+					
+					if let touchEndClosure = touchEndClosure
+					{
+						touchEndClosure()
+					}
 				}
 			}
 		}
@@ -84,23 +84,24 @@ class PsuedoButton
 	{
 		for touch in touches
 		{
-			let wasInside = findAngleIfInside(touch)
-			
-			if wasInside && savedTouch == nil
+			if savedTouch == nil
 			{
-				//the button was touched
-				
-				savedTouch = touch
-				
-				if let touchClosure = touchClosure
+				if let angle = findAngleIfInside(touch)
 				{
-					touchClosure(lastAngle)
+					//the button was touched
+					
+					savedTouch = touch
+					
+					if let touchClosure = touchClosure
+					{
+						touchClosure(angle)
+					}
 				}
 			}
 		}
 	}
 	
-	private func findAngleIfInside(touch:UITouch) -> Bool
+	private func findAngleIfInside(touch:UITouch) -> CGFloat?
 	{
 		let touchPosition = touch.locationInNode(comparisonNode)
 		
@@ -110,9 +111,8 @@ class PsuedoButton
 		let distance = sqrt(xDis*xDis + yDis*yDis)
 		if distance <= size
 		{
-			lastAngle = CGFloat(atan2(yDis, xDis))
-			return true
+			return CGFloat(atan2(yDis, xDis))
 		}
-		return false
+		return nil
 	}
 }
