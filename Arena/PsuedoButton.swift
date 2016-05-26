@@ -33,18 +33,15 @@ class PsuedoButton
 	{
 		for touch in touches
 		{
-			if let savedTouch = savedTouch
+			if savedTouch != nil && savedTouch! == touch
 			{
-				if savedTouch == touch
+				//the saved touch ended
+				
+				self.savedTouch = nil
+				
+				if let touchEndClosure = touchEndClosure
 				{
-					//the saved touch ended
-					
-					self.savedTouch = nil
-					
-					if let touchEndClosure = touchEndClosure
-					{
-						touchEndClosure()
-					}
+					touchEndClosure()
 				}
 			}
 		}

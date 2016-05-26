@@ -182,8 +182,7 @@ class Creature
 		//attack progress
 		if let attackTimer = self.attackTimer
 		{
-			let attackSpeed:CGFloat = 0.5
-			self.attackTimer = attackTimer + attackSpeed * elapsed
+			self.attackTimer = attackTimer + stats.attackSpeed * elapsed
 			if self.attackTimer! >= 1
 			{
 				unleashAttack(creatureArray)
@@ -193,8 +192,7 @@ class Creature
 		}
 		if let attackCooldown = self.attackCooldown
 		{
-			let attackCooldownSpeed:CGFloat = 0.5
-			self.attackCooldown = attackCooldown + attackCooldownSpeed * elapsed
+			self.attackCooldown = attackCooldown + stats.attackCooldownSpeed * elapsed
 			if self.attackCooldown! >= 1
 			{
 				self.attackCooldown = nil
@@ -214,14 +212,10 @@ class Creature
 					let xDif = creature.position.x - position.x
 					let yDif = creature.position.y - position.y
 					
-					//get
-					let range:CGFloat = 10
-					let angularRange:CGFloat = CGFloat(M_PI) / 2
-					
 					//are you in range?
 					let distance = sqrt(xDif*xDif + yDif*yDif)
 					
-					if distance <= range + stats.size + creature.stats.size
+					if distance <= stats.attackRange + stats.size + creature.stats.size
 					{
 						//find the angle difference, to see if they are in front of you
 						let angle = atan2(yDif, xDif)
@@ -236,10 +230,10 @@ class Creature
 							angleDif -= CGFloat(M_PI) * 2
 						}
 						
-						if abs(angleDif) < angularRange
+						if abs(angleDif) < stats.attackAngularRange
 						{
 							//they're in range and in angle, so they take a hit
-							creature.takeHit(1, direction: facingDirection, knockback: 10.0, knockbackLength: 1.0, stun: 1.0)
+							creature.takeHit(1, direction: facingDirection, knockback: stats.attackKnockback, knockbackLength: stats.attackKnockbackLength, stun: stats.attackStunLength)
 						}
 					}
 				}
