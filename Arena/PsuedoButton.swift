@@ -74,6 +74,20 @@ class PsuedoButton
 					}
 				}
 			}
+			else if savedTouch == nil
+			{
+				if let angle = findAngleIfInside(touch)
+				{
+					//a new touch moved inside
+					
+					savedTouch = touch
+					
+					if let touchMoveClosure = touchMoveClosure
+					{
+						touchMoveClosure(angle)
+					}
+				}
+			}
 		}
 	}
 	

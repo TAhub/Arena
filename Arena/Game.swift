@@ -38,7 +38,7 @@ class Game
 		makeCreatures()
 	}
 	
-	func addEnemy(enemy:Creature)
+	func addEnemy(enemy:Enemy)
 	{
 		enemies.append(enemy)
 		makeCreatures()

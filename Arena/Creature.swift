@@ -8,6 +8,7 @@
 
 import SpriteKit
 
+
 class Creature
 {
 	//MARK: public variables
@@ -55,6 +56,11 @@ class Creature
 	var drawPosition:CGPoint
 	{
 		//TODO: account for hovering, falling, and other things that change z without changing y here
+		return position;
+	}
+	
+	var realPosition:CGPoint
+	{
 		return position;
 	}
 	

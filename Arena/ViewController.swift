@@ -23,7 +23,7 @@ class ViewController: UIViewController {
 		
 		let game = Game()
 		game.addPlayer(Creature(position: CGPointMake(200, 200), type: "testman"))
-		game.addEnemy(Creature(position: CGPointMake(300, 300), type: "testman"))
+		game.addEnemy(Enemy(position: CGPointMake(300, 300), type: "testman"))
 		let scene = GameScene(size: view.bounds.size)
 		scene.game = game
 		skView.presentScene(scene)
