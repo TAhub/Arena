@@ -45,6 +45,21 @@ class CreatureTests: XCTestCase {
 		XCTAssertFalse(creature.collidePoint(CGPointMake(110, 100)))
 	}
 	
+	//MARK: turn system tests
+	
+	func testTurn()
+	{
+		creature.turn(CGFloat(M_PI))
+		XCTAssertTrue(creature.spriteMirrored)
+	}
+	
+	func testCannotTurnWhileAttacking()
+	{
+		creature.attack()
+		creature.turn(CGFloat(M_PI))
+		XCTAssertFalse(creature.spriteMirrored)
+	}
+	
 	//MARK: movement system tests
 	
 	func testMoveParabolic()
@@ -93,6 +108,8 @@ class CreatureTests: XCTestCase {
 		creature.update(0.2)
 		XCTAssertGreaterThan(creature.realPosition.x, 100)
 		XCTAssertEqual(creature.realPosition.y, 100)
+		XCTAssertEqual(creature.angleSuffix, "_side")
+		XCTAssertFalse(creature.spriteMirrored)
 	}
 	
 	func testMoveUp()
@@ -101,6 +118,8 @@ class CreatureTests: XCTestCase {
 		creature.update(0.2)
 		XCTAssertEqual(creature.realPosition.x, 100)
 		XCTAssertGreaterThan(creature.realPosition.y, 100)
+		XCTAssertEqual(creature.angleSuffix, "_back")
+		XCTAssertFalse(creature.spriteMirrored)
 	}
 	
 	func testMoveLeft()
@@ -109,6 +128,8 @@ class CreatureTests: XCTestCase {
 		creature.update(0.2)
 		XCTAssertLessThan(creature.realPosition.x, 100)
 		XCTAssertEqual(creature.realPosition.y, 100)
+		XCTAssertEqual(creature.angleSuffix, "_side")
+		XCTAssertTrue(creature.spriteMirrored)
 	}
 	
 	func testMoveDown()
@@ -117,6 +138,48 @@ class CreatureTests: XCTestCase {
 		creature.update(0.2)
 		XCTAssertEqual(creature.realPosition.x, 100)
 		XCTAssertLessThan(creature.realPosition.y, 100)
+		XCTAssertEqual(creature.angleSuffix, "_front")
+		XCTAssertFalse(creature.spriteMirrored)
+	}
+	
+	func testMoveUpRight()
+	{
+		creature.move(CGFloat(M_PI) / 4)
+		creature.update(0.2)
+		XCTAssertGreaterThan(creature.realPosition.x, 100)
+		XCTAssertGreaterThan(creature.realPosition.y, 100)
+		XCTAssertEqual(creature.angleSuffix, "_side")
+		XCTAssertFalse(creature.spriteMirrored)
+	}
+	
+	func testMoveUpLeft()
+	{
+		creature.move(CGFloat(M_PI) * 3 / 4)
+		creature.update(0.2)
+		XCTAssertLessThan(creature.realPosition.x, 100)
+		XCTAssertGreaterThan(creature.realPosition.y, 100)
+		XCTAssertEqual(creature.angleSuffix, "_side")
+		XCTAssertTrue(creature.spriteMirrored)
+	}
+	
+	func testMoveDownRight()
+	{
+		creature.move(CGFloat(M_PI) * 7 / 4)
+		creature.update(0.2)
+		XCTAssertGreaterThan(creature.realPosition.x, 100)
+		XCTAssertLessThan(creature.realPosition.y, 100)
+		XCTAssertEqual(creature.angleSuffix, "_side")
+		XCTAssertFalse(creature.spriteMirrored)
+	}
+	
+	func testMoveDownLeft()
+	{
+		creature.move(CGFloat(M_PI) * 5 / 4)
+		creature.update(0.2)
+		XCTAssertLessThan(creature.realPosition.x, 100)
+		XCTAssertLessThan(creature.realPosition.y, 100)
+		XCTAssertEqual(creature.angleSuffix, "_side")
+		XCTAssertTrue(creature.spriteMirrored)
 	}
 	
 	func testNoMoveIntoPerson()

@@ -64,40 +64,81 @@ class Creature
 		return position;
 	}
 	
-	var animSuffix:NSString
+	var angleSuffix:String
+	{
+		if facingDirection > CGFloat(M_PI) / 4 && facingDirection < CGFloat(M_PI) * 3 / 4
+		{
+			return "_back"
+		}
+		else if facingDirection > CGFloat(M_PI) * 5 / 4 && facingDirection < CGFloat(M_PI) * 7 / 4
+		{
+			return "_front"
+		}
+		return "_side"
+	}
+	
+	var spriteMirrored:Bool
+	{
+		return facingDirection > CGFloat(M_PI) / 2 && facingDirection < CGFloat(M_PI) * 3 / 2
+	}
+	
+	var animSuffix:String
 	{
 		if attackTimer != nil
 		{
-			return "_swing1";
+			return "_swing1"
 		}
 		else if attackCooldown != nil
 		{
-			return "_swing2";
+			return "_swing2"
 		}
 		if let moveTimer = moveTimer
 		{
 			if moveTimer < 0.25
 			{
-				return "_walk1";
+				return "_walk1"
 			}
 			else if moveTimer >= 0.5 && moveTimer < 0.75
 			{
-				return "_walk2";
+				return "_walk2"
 			}
 		}
-		return "_neutral";
+		return "_neutral"
 	}
 	
 	//MARK: command code
+	
+	func turn(direction:CGFloat)
+	{
+		if self.attackTimer == nil && self.attackCooldown == nil
+		{
+			facingDirection = correctDirection(direction)
+		}
+	}
 	
 	func move(direction:CGFloat)
 	{
 		if self.attackTimer == nil && self.attackCooldown == nil
 		{
+			let direction = correctDirection(direction)
 			accelDirection = direction
 			facingDirection = direction
 			moveTimer = moveTimer ?? 0
 		}
+	}
+	
+	private func correctDirection(direction:CGFloat) -> CGFloat
+	{
+		var direction = direction
+		while direction < 0
+		{
+			direction += CGFloat(M_PI) * 2
+		}
+		while (direction > CGFloat(M_PI) * 2)
+		{
+			direction -= CGFloat(M_PI) * 2
+		}
+		return direction
 	}
 	
 	func attack()

@@ -13,6 +13,7 @@ class Enemy:Creature
 	//MARK: AI script names
 	internal static let aiScriptWalkTowardsPlayer = "WALK TO"
 	internal static let aiScriptWalkAwayFromPlayer = "WALK AWAY"
+	internal static let aiScriptAttackTowardsPlayer = "ATTACK"
 	
 	
 	//MARK: AI variables
@@ -44,6 +45,7 @@ class Enemy:Creature
 			{
 			case Enemy.aiScriptWalkTowardsPlayer:	walkTowardsPlayer(creatureArray)
 			case Enemy.aiScriptWalkAwayFromPlayer:	walkAwayFromPlayer(creatureArray)
+			case Enemy.aiScriptAttackTowardsPlayer:	attackTowardsPlayer(creatureArray)
 			default: break;
 			}
 			
@@ -60,25 +62,33 @@ class Enemy:Creature
 	//MARK: AI subscripts
 	private func walkTowardsPlayer(creatureArray: [Creature])
 	{
-		self.walkInRelationToPlayer(creatureArray, angleAdd: 0)
+		let angle = getAngleToPlayer(creatureArray)
+		self.move(angle)
 	}
 	
 	private func walkAwayFromPlayer(creatureArray: [Creature])
 	{
-		self.walkInRelationToPlayer(creatureArray, angleAdd: CGFloat(M_PI))
+		let angle = getAngleToPlayer(creatureArray)
+		self.move(angle + CGFloat(M_PI))
+	}
+	
+	private func attackTowardsPlayer(creatureArray: [Creature])
+	{
+		let angle = getAngleToPlayer(creatureArray)
+		self.turn(angle)
+		
+		self.attack()
 	}
 	
 	//MARK: AI helper functions
 	
-	private func walkInRelationToPlayer(creatureArray: [Creature], angleAdd: CGFloat)
+	private func getAngleToPlayer(creatureArray: [Creature]) -> CGFloat
 	{
 		let player = getPlayerFromCreatureArray(creatureArray)
-		
 		let xDis = player.realPosition.x - self.realPosition.x
 		let yDis = player.realPosition.y - self.realPosition.y
-		let angle = CGFloat(atan2f(Float(yDis), Float(xDis))) + angleAdd
-		
-		self.move(angle)
+		let angle = CGFloat(atan2f(Float(yDis), Float(xDis)))
+		return angle;
 	}
 	
 	private func getPlayerFromCreatureArray(creatureArray: [Creature]) -> Creature

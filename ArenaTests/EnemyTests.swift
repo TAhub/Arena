@@ -51,7 +51,26 @@ class EnemyTests: XCTestCase {
 		XCTAssertEqual(oldX, enemy.realPosition.x)
 	}
 	
+	func testAIAttack()
+	{
+		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1)
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertTrue(enemyAttacking)
+		XCTAssertEqual(enemy.realPosition.x, 100)
+	}
+	
+	//MARKL use force-AI to test AI conditions
+	
 	//MARK: test testman default AI script
 	
-	//TODO: test the default AI progression for testman
+	//MARK: helper functions
+	var enemyAttacking:Bool
+	{
+		return enemy.animSuffix == "_swing1"
+	}
+	var enemyNeutral:Bool
+	{
+		return enemy.animSuffix == "_neutral"
+	}
+	
 }
