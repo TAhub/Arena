@@ -106,11 +106,16 @@ class Creature
 		return "_neutral"
 	}
 	
+	var attacking:Bool
+	{
+		return attackTimer != nil || attackCooldown != nil
+	}
+	
 	//MARK: command code
 	
 	func turn(direction:CGFloat)
 	{
-		if self.attackTimer == nil && self.attackCooldown == nil
+		if !self.attacking
 		{
 			facingDirection = correctDirection(direction)
 		}
@@ -118,7 +123,7 @@ class Creature
 	
 	func move(direction:CGFloat)
 	{
-		if self.attackTimer == nil && self.attackCooldown == nil
+		if !self.attacking
 		{
 			let direction = correctDirection(direction)
 			accelDirection = direction
@@ -254,38 +259,47 @@ class Creature
 			//check to see if anyone is in the arc
 			for creature in creatureArray
 			{
-				if !(creature === self)
+				if inRangeToHit(creature)
 				{
-					let xDif = creature.position.x - position.x
-					let yDif = creature.position.y - position.y
-					
-					//are you in range?
-					let distance = sqrt(xDif*xDif + yDif*yDif)
-					
-					if distance <= stats.attackRange + stats.size + creature.stats.size
-					{
-						//find the angle difference, to see if they are in front of you
-						let angle = atan2(yDif, xDif)
-						
-						var angleDif = angle - facingDirection
-						if angleDif < -CGFloat(M_PI)
-						{
-							angleDif += CGFloat(M_PI) * 2
-						}
-						else if angleDif > CGFloat(M_PI)
-						{
-							angleDif -= CGFloat(M_PI) * 2
-						}
-						
-						if abs(angleDif) < stats.attackAngularRange
-						{
-							//they're in range and in angle, so they take a hit
-							creature.takeHit(1, direction: facingDirection, knockback: stats.attackKnockback, knockbackLength: stats.attackKnockbackLength, stun: stats.attackStunLength)
-						}
-					}
+					//they're in range and in angle, so they take a hit
+					creature.takeHit(1, direction: facingDirection, knockback: stats.attackKnockback, knockbackLength: stats.attackKnockbackLength, stun: stats.attackStunLength)
 				}
 			}
 		}
+	}
+	
+	func inRangeToHit(creature:Creature) -> Bool
+	{
+		if !(creature === self)
+		{
+			let xDif = creature.position.x - position.x
+			let yDif = creature.position.y - position.y
+			
+			//are you in range?
+			let distance = sqrt(xDif*xDif + yDif*yDif)
+			
+			if distance <= stats.attackRange + stats.size + creature.stats.size
+			{
+				//find the angle difference, to see if they are in front of you
+				let angle = atan2(yDif, xDif)
+				
+				var angleDif = angle - facingDirection
+				if angleDif < -CGFloat(M_PI)
+				{
+					angleDif += CGFloat(M_PI) * 2
+				}
+				else if angleDif > CGFloat(M_PI)
+				{
+					angleDif -= CGFloat(M_PI) * 2
+				}
+				
+				if abs(angleDif) < stats.attackAngularRange
+				{
+					return true
+				}
+			}
+		}
+		return false
 	}
 	
 	private func postStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?)

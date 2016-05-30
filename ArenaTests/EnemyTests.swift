@@ -21,7 +21,7 @@ class EnemyTests: XCTestCase {
 		
 		enemy = Enemy(position: CGPointMake(100, 100), type: "testman")
 		player = Creature(position: CGPointMake(120, 100), type: "testman")
-		creatureArray = [enemy, player]
+		creatureArray = [player, enemy]
     }
     
     override func tearDown() {
@@ -53,24 +53,62 @@ class EnemyTests: XCTestCase {
 	
 	func testAIAttack()
 	{
-		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1)
+		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 999)
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertTrue(enemyAttacking)
+		XCTAssertTrue(enemy.attacking)
 		XCTAssertEqual(enemy.realPosition.x, 100)
+		
+		//make sure it only attacks ONCE
+		enemy.update(99, creatureArray: creatureArray)
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertFalse(enemy.attacking)
+	}
+	
+	func testAITurn()
+	{
+		//move the player to the left of the enemy, and then turn to them
+		player.move(CGFloat(M_PI))
+		player.update(5.0)
+		enemy.forceAIScript(Enemy.aiScriptTurnTowardsPlayer, duration: 999)
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertTrue(enemy.spriteMirrored)
+		
+		//the script should end instantly, so here's a test to make sure it doesn't turn again
+		player.move(0)
+		player.update(15.0)
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertTrue(enemy.spriteMirrored)
 	}
 	
 	//MARKL use force-AI to test AI conditions
 	
+	func testConditionsApplyOnce()
+	{
+		enemy.move(CGFloat(M_PI))
+		enemy.update(10, creatureArray: creatureArray)
+		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1, condition: Enemy.aiConditionInRange)
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertFalse(enemy.attacking)
+		enemy.update(10, creatureArray: creatureArray)
+		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1)
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertTrue(enemy.attacking)
+	}
+	
+	func testIfInRange()
+	{
+		enemy.move(0)
+		enemy.update(10, creatureArray: creatureArray)
+		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1, condition: Enemy.aiConditionInRange)
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertTrue(enemy.attacking)
+		enemy.update(10, creatureArray: creatureArray)
+		enemy.move(CGFloat(M_PI))
+		enemy.update(10, creatureArray: creatureArray)
+		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1, condition: Enemy.aiConditionInRange)
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertFalse(enemy.attacking)
+	}
+	
 	//MARK: test testman default AI script
-	
-	//MARK: helper functions
-	var enemyAttacking:Bool
-	{
-		return enemy.animSuffix == "_swing1"
-	}
-	var enemyNeutral:Bool
-	{
-		return enemy.animSuffix == "_neutral"
-	}
-	
 }

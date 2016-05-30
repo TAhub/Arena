@@ -310,16 +310,20 @@ class CreatureTests: XCTestCase {
 	{
 		//test to make sure you don't start out attacking, but you do end up attacking for a while after selecting attack
 		XCTAssertFalse(creatureAttacking)
+		XCTAssertFalse(creature.attacking)
 		creature.attack()
 		XCTAssertTrue(creatureAttacking)
+		XCTAssertTrue(creature.attacking)
 		creature.update(100)
 		XCTAssertFalse(creatureAttacking)
+		XCTAssertFalse(creature.attacking)
 	}
 	
 	func testAttackCooldownProgression()
 	{
 		//test to make sure that attack cooldown happens after attacking ends
 		XCTAssertFalse(creatureInCooldown)
+		XCTAssertFalse(creature.attacking)
 		creature.attack()
 		XCTAssertFalse(creatureInCooldown)
 		while creatureAttacking
@@ -327,12 +331,15 @@ class CreatureTests: XCTestCase {
 			creature.update(0.1)
 		}
 		XCTAssertTrue(creatureInCooldown)
+		XCTAssertTrue(creature.attacking)
 		creature.update(100)
 		XCTAssertFalse(creatureInCooldown)
+		XCTAssertFalse(creature.attacking)
 	}
 	
 	func testAttackHitting()
 	{
+		XCTAssertTrue(creature.inRangeToHit(otherCreature))
 		creature.attack()
 		creature.update(100, creatureArray: creatureArray)
 		XCTAssertEqual(otherCreature.health, 2)
@@ -342,6 +349,7 @@ class CreatureTests: XCTestCase {
 	{
 		otherCreature.move(0)
 		otherCreature.update(10)
+		XCTAssertFalse(creature.inRangeToHit(otherCreature))
 		creature.attack()
 		creature.update(100, creatureArray: creatureArray)
 		XCTAssertEqual(otherCreature.health, 3)

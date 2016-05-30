@@ -50,12 +50,6 @@ class GameTests: XCTestCase {
 	func testControlAttack()
 	{
 		game.attack()
-		XCTAssertTrue(creatureAttacking)
-	}
-	
-	//MARK: helper functions
-	var creatureAttacking:Bool
-	{
-		return game.player!.animSuffix == "_swing1"
+		XCTAssertTrue(game.player!.attacking)
 	}
 }
