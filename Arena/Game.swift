@@ -15,7 +15,7 @@ class Game
 	internal var enemies = [Creature]()
 	private func makeCreatures()
 	{
-		_creatures = enemies + (player != nil ? [player!] : []);
+		_creatures = (player != nil ? [player!] : []) + enemies;
 	}
 	private var _creatures = [Creature]()
 	private var moveDirection:CGFloat?
