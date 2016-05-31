@@ -31,6 +31,19 @@ class EnemyTests: XCTestCase {
 	
 	//MARK: use force-AI set to test AI subscripts
 	
+	func testAIScriptsPauseWhileAttacking()
+	{
+		enemy.attack()
+		enemy.forceAIScript(Enemy.aiScriptWalkTowardsPlayer, duration: 0.25)
+		enemy.update(0.5, creatureArray: creatureArray)
+		XCTAssertEqual(enemy.realPosition.x, 100)
+		enemy.update(0.5, creatureArray: creatureArray)
+		enemy.update(0.5, creatureArray: creatureArray)
+		enemy.update(0.5, creatureArray: creatureArray)
+		enemy.update(0.5, creatureArray: creatureArray)
+		XCTAssertGreaterThan(enemy.realPosition.x, 100)
+	}
+	
 	func testAIMoveTowardsPlayer()
 	{
 		enemy.forceAIScript(Enemy.aiScriptWalkTowardsPlayer, duration: 0.1)
@@ -39,6 +52,15 @@ class EnemyTests: XCTestCase {
 		XCTAssertGreaterThan(oldX, 100)
 		enemy.update(0.1, creatureArray: creatureArray)
 		XCTAssertEqual(oldX, enemy.realPosition.x)
+		
+		//test to make sure it works at angles too
+		player.move(CGFloat(M_PI) / 2)
+		player.update(5.0)
+		enemy.forceAIScript(Enemy.aiScriptWalkTowardsPlayer, duration: 0.1)
+		let oldX2 = enemy.realPosition.x
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertGreaterThan(enemy.realPosition.x, oldX2)
+		XCTAssertGreaterThan(enemy.realPosition.y, 100)
 	}
 	
 	func testAIMoveAwayFromPlayer()
@@ -111,4 +133,41 @@ class EnemyTests: XCTestCase {
 	}
 	
 	//MARK: test testman default AI script
+	
+	func testAISCriptProgression()
+	{
+		//the testman's AI script is, in order: attack, move towards player (2s), move away from player (2s), wait (5s)
+		
+		enemy.startAIProgression()
+		
+		//test to see if it attacks
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertTrue(enemy.attacking)
+		
+		while (enemy.attacking)
+		{
+			enemy.update(0.05, creatureArray: creatureArray)
+		}
+		
+		//test to see if it moves towards the player
+		enemy.update(0.5, creatureArray: creatureArray)
+		XCTAssertGreaterThan(enemy.realPosition.x, 100)
+		XCTAssertFalse(enemy.spriteMirrored)
+		
+		enemy.update(1.5, creatureArray: creatureArray)
+		
+		//test to see if it moves away from the player
+		enemy.update(2, creatureArray: creatureArray)
+		XCTAssertLessThanOrEqual(enemy.realPosition.x, 100)
+		let oldX = enemy.realPosition.x
+		XCTAssertTrue(enemy.spriteMirrored)
+		
+		//test to see if it waits
+		enemy.update(5, creatureArray: creatureArray)
+		XCTAssertEqual(enemy.realPosition.x, oldX)
+		
+		//test to see if it repeats
+		enemy.update(0.1, creatureArray: creatureArray)
+		XCTAssertTrue(enemy.attacking)
+	}
 }

@@ -15,6 +15,7 @@ class Enemy:Creature
 	internal static let aiScriptWalkAwayFromPlayer = "WALK AWAY"
 	internal static let aiScriptAttackTowardsPlayer = "ATTACK"
 	internal static let aiScriptTurnTowardsPlayer = "TURN TO"
+	internal static let aiScriptWait = "WAIT"
 	
 	//MARK: AI condition names
 	internal static let aiConditionInRange = "IN RANGE"
@@ -24,6 +25,7 @@ class Enemy:Creature
 	private var scriptRunning:String?
 	private var scriptCondition:String?
 	private var scriptDuration:CGFloat = 0
+	private var aiProgression:Int?
 	
 	//MARK: initializers
 	
@@ -43,48 +45,84 @@ class Enemy:Creature
 		scriptCondition = condition
 	}
 	
+	func startAIProgression()
+	{
+		aiProgression = 0
+	}
+	
 	override func update(elapsed: CGFloat, creatureArray: [Creature]? = nil)
 	{
-		if let creatureArray = creatureArray, let scriptRunning = scriptRunning
+		startNextAIScript()
+		runCurrentAIScript(elapsed, creatureArray: creatureArray)
+		startNextAIScript()
+		super.update(elapsed, creatureArray: creatureArray)
+	}
+	
+	private func runCurrentAIScript(elapsed: CGFloat, creatureArray: [Creature]?)
+	{
+		if !self.attacking
 		{
-			if let scriptCondition = scriptCondition
+			if let creatureArray = creatureArray, let scriptRunning = scriptRunning
 			{
-				var fulfillsCondition = true;
-				
-				switch(scriptCondition)
+				if let scriptCondition = scriptCondition
 				{
-				case Enemy.aiConditionInRange:	fulfillsCondition = inRangeToHit(getPlayerFromCreatureArray(creatureArray))
-				default: break
+					var fulfillsCondition = true;
+					
+					switch(scriptCondition)
+					{
+					case Enemy.aiConditionInRange:	fulfillsCondition = inRangeToHit(getPlayerFromCreatureArray(creatureArray))
+					default: break
+					}
+					
+					if !fulfillsCondition
+					{
+						scriptDuration = 0
+					}
+					
+					self.scriptCondition = nil
 				}
 				
-				if !fulfillsCondition
+				if scriptDuration > 0
 				{
-					scriptDuration = 0
+					switch(scriptRunning)
+					{
+					case Enemy.aiScriptWalkTowardsPlayer:	walkTowardsPlayer(creatureArray)
+					case Enemy.aiScriptWalkAwayFromPlayer:	walkAwayFromPlayer(creatureArray)
+					case Enemy.aiScriptAttackTowardsPlayer:	attackTowardsPlayer(creatureArray)
+					case Enemy.aiScriptTurnTowardsPlayer:	turnTowardsPlayer(creatureArray)
+					default: break
+					}
 				}
 				
-				self.scriptCondition = nil
-			}
-			
-			if scriptDuration > 0
-			{
-				switch(scriptRunning)
+				scriptDuration -= elapsed
+				if scriptDuration <= 0
 				{
-				case Enemy.aiScriptWalkTowardsPlayer:	walkTowardsPlayer(creatureArray)
-				case Enemy.aiScriptWalkAwayFromPlayer:	walkAwayFromPlayer(creatureArray)
-				case Enemy.aiScriptAttackTowardsPlayer:	attackTowardsPlayer(creatureArray)
-				case Enemy.aiScriptTurnTowardsPlayer:	turnTowardsPlayer(creatureArray)
-				default: break
+					self.scriptRunning = nil
 				}
-			}
-			
-			scriptDuration -= elapsed
-			if scriptDuration <= 0
-			{
-				self.scriptRunning = nil
 			}
 		}
-		
-		super.update(elapsed, creatureArray: creatureArray)
+	}
+	
+	private func startNextAIScript()
+	{
+		if self.scriptRunning == nil
+		{
+			if let aiProgression = aiProgression
+			{
+				//start the current script
+				switch(aiProgression)
+				{
+				case 0:		forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 999)
+				case 1:		forceAIScript(Enemy.aiScriptWalkTowardsPlayer, duration: 2)
+				case 2:		forceAIScript(Enemy.aiScriptWalkAwayFromPlayer, duration: 2)
+				case 3:		forceAIScript(Enemy.aiScriptWait, duration: 5)
+				default:	break;
+				}
+				
+				//TODO: progress the AI progression (including the cap)
+				self.aiProgression = (aiProgression + 1) % 4
+			}
+		}
 	}
 	
 	//MARK: AI subscripts
@@ -105,8 +143,8 @@ class Enemy:Creature
 		let angle = getAngleToPlayer(creatureArray)
 		self.turn(angle)
 		
-		//instantly end the script if you are able to attack here
-		self.scriptDuration = !self.attacking ? 0 : 999
+		//instantly end the script
+		self.scriptDuration = 0
 		
 		self.attack()
 	}
@@ -116,8 +154,8 @@ class Enemy:Creature
 		let angle = getAngleToPlayer(creatureArray)
 		self.turn(angle)
 		
-		//instantly end the script if you are able to turn here
-		self.scriptDuration = !self.attacking ? 0 : 999
+		//instantly end the script
+		self.scriptDuration = 0
 	}
 	
 	//MARK: AI helper functions

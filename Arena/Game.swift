@@ -41,6 +41,7 @@ class Game
 	func addEnemy(enemy:Enemy)
 	{
 		enemies.append(enemy)
+		enemy.startAIProgression()
 		makeCreatures()
 	}
 	
