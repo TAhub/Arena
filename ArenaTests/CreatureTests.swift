@@ -417,11 +417,11 @@ class CreatureTests: XCTestCase {
 	//MARK: helper functions
 	var creatureAttacking:Bool
 	{
-		return creature.animSuffix == "_swing1"
+		return creature.animSuffix == "_slash1"
 	}
 	var creatureInCooldown:Bool
 	{
-		return creature.animSuffix == "_swing2"
+		return creature.animSuffix == "_slash2"
 	}
 	var creatureWalkingOne:Bool
 	{

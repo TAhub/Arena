@@ -86,11 +86,11 @@ class Creature
 	{
 		if attackTimer != nil
 		{
-			return "_swing1"
+			return "_slash1"
 		}
 		else if attackCooldown != nil
 		{
-			return "_swing2"
+			return "_slash2"
 		}
 		if let moveTimer = moveTimer
 		{
