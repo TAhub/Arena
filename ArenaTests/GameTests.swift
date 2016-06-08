@@ -50,6 +50,6 @@ class GameTests: XCTestCase {
 	func testControlAttack()
 	{
 		game.attack()
-		XCTAssertTrue(game.player!.attacking)
+		XCTAssertTrue(game.player!.isAttacking)
 	}
 }

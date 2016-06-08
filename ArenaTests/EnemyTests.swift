@@ -77,13 +77,13 @@ class EnemyTests: XCTestCase {
 	{
 		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 999)
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertTrue(enemy.attacking)
+		XCTAssertTrue(enemy.isAttacking)
 		XCTAssertEqual(enemy.realPosition.x, 100)
 		
 		//make sure it only attacks ONCE
 		enemy.update(99, creatureArray: creatureArray)
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertFalse(enemy.attacking)
+		XCTAssertFalse(enemy.isAttacking)
 	}
 	
 	func testAITurn()
@@ -110,11 +110,11 @@ class EnemyTests: XCTestCase {
 		enemy.update(10, creatureArray: creatureArray)
 		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1, condition: Enemy.aiConditionInRange)
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertFalse(enemy.attacking)
+		XCTAssertFalse(enemy.isAttacking)
 		enemy.update(10, creatureArray: creatureArray)
 		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1)
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertTrue(enemy.attacking)
+		XCTAssertTrue(enemy.isAttacking)
 	}
 	
 	func testIfInRange()
@@ -123,18 +123,18 @@ class EnemyTests: XCTestCase {
 		enemy.update(10, creatureArray: creatureArray)
 		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1, condition: Enemy.aiConditionInRange)
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertTrue(enemy.attacking)
+		XCTAssertTrue(enemy.isAttacking)
 		enemy.update(10, creatureArray: creatureArray)
 		enemy.move(CGFloat(M_PI))
 		enemy.update(10, creatureArray: creatureArray)
 		enemy.forceAIScript(Enemy.aiScriptAttackTowardsPlayer, duration: 0.1, condition: Enemy.aiConditionInRange)
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertFalse(enemy.attacking)
+		XCTAssertFalse(enemy.isAttacking)
 	}
 	
 	//MARK: test testman default AI script
 	
-	func testAISCriptProgression()
+	func testAIScriptProgression()
 	{
 		//the testman's AI script is, in order: attack, move towards player (2s), move away from player (2s), wait (5s)
 		
@@ -142,11 +142,11 @@ class EnemyTests: XCTestCase {
 		
 		//test to see if it attacks
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertTrue(enemy.attacking)
+		XCTAssertTrue(enemy.isAttacking)
 		
-		while (enemy.attacking)
+		while enemy.isAttacking || enemy.isInCooldown
 		{
-			enemy.update(0.05, creatureArray: creatureArray)
+			enemy.update(0.5, creatureArray: creatureArray)
 		}
 		
 		//test to see if it moves towards the player
@@ -168,6 +168,6 @@ class EnemyTests: XCTestCase {
 		
 		//test to see if it repeats
 		enemy.update(0.1, creatureArray: creatureArray)
-		XCTAssertTrue(enemy.attacking)
+		XCTAssertTrue(enemy.isAttacking)
 	}
 }

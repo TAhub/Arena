@@ -84,14 +84,6 @@ class Creature
 	
 	var animSuffix:String
 	{
-		if attackTimer != nil
-		{
-			return "_slash1"
-		}
-		else if attackCooldown != nil
-		{
-			return "_slash2"
-		}
 		if let moveTimer = moveTimer
 		{
 			if moveTimer < 0.25
@@ -103,19 +95,39 @@ class Creature
 				return "_walk2"
 			}
 		}
+		else if isAttacking || isInCooldown
+		{
+			if true //TODO: if using normal slash style
+			{
+				//TODO: once I get the new sprites out, change all references of slash2 to slash3 and neutral to slash2
+				if let attackTimer = attackTimer
+				{
+					return attackTimer < 0.7 ? "_slash1" : "_neutral"
+				}
+				else if attackCooldown != nil
+				{
+					return "_slash2"
+				}
+			}
+		}
 		return "_neutral"
 	}
 	
-	var attacking:Bool
+	var isAttacking:Bool
 	{
-		return attackTimer != nil || attackCooldown != nil
+		return attackTimer != nil
+	}
+	
+	var isInCooldown:Bool
+	{
+		return attackCooldown != nil
 	}
 	
 	//MARK: command code
 	
 	func turn(direction:CGFloat)
 	{
-		if !self.attacking
+		if !self.isAttacking && !self.isInCooldown
 		{
 			facingDirection = correctDirection(direction)
 		}
@@ -123,7 +135,7 @@ class Creature
 	
 	func move(direction:CGFloat)
 	{
-		if !self.attacking
+		if !self.isAttacking && !self.isInCooldown
 		{
 			let direction = correctDirection(direction)
 			accelDirection = direction

@@ -309,32 +309,26 @@ class CreatureTests: XCTestCase {
 	func testAttackProgression()
 	{
 		//test to make sure you don't start out attacking, but you do end up attacking for a while after selecting attack
-		XCTAssertFalse(creatureAttacking)
-		XCTAssertFalse(creature.attacking)
+		XCTAssertFalse(creature.isAttacking)
 		creature.attack()
-		XCTAssertTrue(creatureAttacking)
-		XCTAssertTrue(creature.attacking)
+		XCTAssertTrue(creature.isAttacking)
 		creature.update(100)
-		XCTAssertFalse(creatureAttacking)
-		XCTAssertFalse(creature.attacking)
+		XCTAssertFalse(creature.isAttacking)
 	}
 	
 	func testAttackCooldownProgression()
 	{
 		//test to make sure that attack cooldown happens after attacking ends
-		XCTAssertFalse(creatureInCooldown)
-		XCTAssertFalse(creature.attacking)
+		XCTAssertFalse(creature.isAttacking)
 		creature.attack()
-		XCTAssertFalse(creatureInCooldown)
-		while creatureAttacking
+		XCTAssertFalse(creature.isInCooldown)
+		while creature.isAttacking
 		{
-			creature.update(0.1)
+			creature.update(0.5)
 		}
-		XCTAssertTrue(creatureInCooldown)
-		XCTAssertTrue(creature.attacking)
+		XCTAssertTrue(creature.isInCooldown)
 		creature.update(100)
-		XCTAssertFalse(creatureInCooldown)
-		XCTAssertFalse(creature.attacking)
+		XCTAssertFalse(creature.isInCooldown)
 	}
 	
 	func testAttackHitting()
@@ -368,10 +362,10 @@ class CreatureTests: XCTestCase {
 	{
 		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 1.0)
 		creature.attack()
-		XCTAssertFalse(creatureAttacking)
+		XCTAssertFalse(creature.isAttacking)
 		creature.update(100)
 		creature.attack()
-		XCTAssertTrue(creatureAttacking)
+		XCTAssertTrue(creature.isAttacking)
 	}
 	
 	func testStunDoesntStopAttack()
@@ -379,18 +373,18 @@ class CreatureTests: XCTestCase {
 		creature.attack()
 		creature.takeHit(0, direction: 0, knockback: 0, knockbackLength: 0, stun: 100)
 		creature.update(0.1)
-		XCTAssertTrue(creatureAttacking)
+		XCTAssertTrue(creature.isAttacking)
 	}
 	
 	func testNoAttackWhileInCooldown()
 	{
 		creature.attack()
-		while creatureAttacking
+		while creature.isAttacking
 		{
-			creature.update(0.1)
+			creature.update(0.5)
 		}
 		creature.attack()
-		XCTAssertFalse(creatureAttacking)
+		XCTAssertFalse(creature.isAttacking)
 		
 	}
 	
@@ -405,9 +399,9 @@ class CreatureTests: XCTestCase {
 	func testNoMovingWhileCooldown()
 	{
 		creature.attack()
-		while creatureAttacking
+		while creature.isAttacking
 		{
-			creature.update(0.1)
+			creature.update(0.5)
 		}
 		creature.move(0)
 		creature.update(0.1)
@@ -415,14 +409,6 @@ class CreatureTests: XCTestCase {
 	}
 	
 	//MARK: helper functions
-	var creatureAttacking:Bool
-	{
-		return creature.animSuffix == "_slash1"
-	}
-	var creatureInCooldown:Bool
-	{
-		return creature.animSuffix == "_slash2"
-	}
 	var creatureWalkingOne:Bool
 	{
 		return creature.animSuffix == "_walk1"

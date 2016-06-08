@@ -60,7 +60,7 @@ class Enemy:Creature
 	
 	private func runCurrentAIScript(elapsed: CGFloat, creatureArray: [Creature]?)
 	{
-		if !self.attacking
+		if !self.isAttacking && !self.isInCooldown
 		{
 			if let creatureArray = creatureArray, let scriptRunning = scriptRunning
 			{

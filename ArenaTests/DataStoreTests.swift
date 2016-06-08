@@ -47,6 +47,6 @@ class DataStoreTests: XCTestCase {
 	func testLoadAsWrongType()
 	{
 		XCTAssertNil(DataStore.getString("Tests", "Entry One", "Float"))
-		XCTAssertNil(DataStore.getInt("Tests", "Entry One", "Int"))
+		XCTAssertNil(DataStore.getInt("Tests", "Entry One", "String"))
 	}
 }
