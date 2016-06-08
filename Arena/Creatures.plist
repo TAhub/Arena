@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   Creatures.plist
+   Arena
+
+   Created by Theodore Abshire on 6/7/16.
+   Copyright (c) 2016 Theodore Abshire. All rights reserved.
+-->
+<plist version="1.0">
+<dict>
+	<key>testman</key>
+	<dict>
+		<key>max health</key> <real>3</real>
+		<key>max speed</key> <real>75</real>
+		<key>accel rate</key> <real>200</real>
+		<key>decel rate</key> <real>400</real>
+		<key>size</key> <real>5</real>
+	</dict>
+</dict>
+</plist>

@@ -14,6 +14,10 @@
 		E4310CBC1CE3FB8500C45BAB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4310CBA1CE3FB8500C45BAB /* LaunchScreen.storyboard */; };
 		E4310CE21CE3FBF200C45BAB /* Creature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CE11CE3FBF200C45BAB /* Creature.swift */; };
 		E4310CE41CE3FD7F00C45BAB /* CreatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */; };
+		E439E49A1D07B3E700EC0432 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E439E4991D07B3E700EC0432 /* DataStoreTests.swift */; };
+		E439E49C1D07B43800EC0432 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E439E49B1D07B43800EC0432 /* DataStore.swift */; };
+		E439E4A01D07B52100EC0432 /* Tests.plist in Resources */ = {isa = PBXBuildFile; fileRef = E439E49F1D07B52100EC0432 /* Tests.plist */; };
+		E439E4A21D07BE8300EC0432 /* Creatures.plist in Resources */ = {isa = PBXBuildFile; fileRef = E439E4A11D07BE8300EC0432 /* Creatures.plist */; };
 		E43BB10D1CF4DC0B00C3B798 /* CreatureStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43BB10C1CF4DC0B00C3B798 /* CreatureStats.swift */; };
 		E43BB10F1CF545B600C3B798 /* PsuedoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43BB10E1CF545B600C3B798 /* PsuedoButton.swift */; };
 		E44088AA1CF3B3930095AB4A /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088A91CF3B3930095AB4A /* GameTests.swift */; };
@@ -55,6 +59,10 @@
 		E4310CD31CE3FB8500C45BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4310CE11CE3FBF200C45BAB /* Creature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Creature.swift; sourceTree = "<group>"; };
 		E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatureTests.swift; sourceTree = "<group>"; };
+		E439E4991D07B3E700EC0432 /* DataStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
+		E439E49B1D07B43800EC0432 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		E439E49F1D07B52100EC0432 /* Tests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Tests.plist; sourceTree = "<group>"; };
+		E439E4A11D07BE8300EC0432 /* Creatures.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Creatures.plist; sourceTree = "<group>"; };
 		E43BB10C1CF4DC0B00C3B798 /* CreatureStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatureStats.swift; sourceTree = "<group>"; };
 		E43BB10E1CF545B600C3B798 /* PsuedoButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsuedoButton.swift; sourceTree = "<group>"; };
 		E44088A91CF3B3930095AB4A /* GameTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
@@ -125,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				E44088A91CF3B3930095AB4A /* GameTests.swift */,
+				E439E4991D07B3E700EC0432 /* DataStoreTests.swift */,
 				E4310CE31CE3FD7F00C45BAB /* CreatureTests.swift */,
 				E44431891CFA8DB00054B0DC /* EnemyTests.swift */,
 				E4310CC81CE3FB8500C45BAB /* Info.plist */,
@@ -143,6 +152,7 @@
 		E4386EE91CEC0D9800615DB5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E439E49B1D07B43800EC0432 /* DataStore.swift */,
 				E43BB10C1CF4DC0B00C3B798 /* CreatureStats.swift */,
 				E444318B1CFA8E8E0054B0DC /* Enemy.swift */,
 				E4310CE11CE3FBF200C45BAB /* Creature.swift */,
@@ -173,6 +183,8 @@
 		E4386EEC1CEC0DCF00615DB5 /* Supporting FIles */ = {
 			isa = PBXGroup;
 			children = (
+				E439E4A11D07BE8300EC0432 /* Creatures.plist */,
+				E439E49F1D07B52100EC0432 /* Tests.plist */,
 				E4310CB81CE3FB8500C45BAB /* Assets.xcassets */,
 				E4310CBD1CE3FB8500C45BAB /* Info.plist */,
 				E4310CBA1CE3FB8500C45BAB /* LaunchScreen.storyboard */,
@@ -285,7 +297,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E439E4A01D07B52100EC0432 /* Tests.plist in Resources */,
 				E4310CBC1CE3FB8500C45BAB /* LaunchScreen.storyboard in Resources */,
+				E439E4A21D07BE8300EC0432 /* Creatures.plist in Resources */,
 				E4310CB91CE3FB8500C45BAB /* Assets.xcassets in Resources */,
 				E4310CB71CE3FB8500C45BAB /* Main.storyboard in Resources */,
 			);
@@ -315,6 +329,7 @@
 				E44088B21CF3C76C0095AB4A /* GameScene.swift in Sources */,
 				E43BB10F1CF545B600C3B798 /* PsuedoButton.swift in Sources */,
 				E4310CB41CE3FB8500C45BAB /* ViewController.swift in Sources */,
+				E439E49C1D07B43800EC0432 /* DataStore.swift in Sources */,
 				E44088B01CF3BFC20095AB4A /* CreatureDrawer.swift in Sources */,
 				E4310CB21CE3FB8500C45BAB /* AppDelegate.swift in Sources */,
 				E444318C1CFA8E8E0054B0DC /* Enemy.swift in Sources */,
@@ -329,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4310CE41CE3FD7F00C45BAB /* CreatureTests.swift in Sources */,
+				E439E49A1D07B3E700EC0432 /* DataStoreTests.swift in Sources */,
 				E444318A1CFA8DB00054B0DC /* EnemyTests.swift in Sources */,
 				E44088AA1CF3B3930095AB4A /* GameTests.swift in Sources */,
 			);

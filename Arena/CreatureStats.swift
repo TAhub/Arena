@@ -11,19 +11,35 @@ import SpriteKit
 class CreatureStats
 {
 	//MARK: private variables
+	private let type:String
 	
 	//MARK: initializer
 	init(type:String)
 	{
-		
+		self.type = type;
 	}
 	
 	//MARK: basic stat accessors
-	let maxHealth:Int = 3
-	let maxSpeed:CGFloat = 75
-	let decelRate:CGFloat = 400
-	let accelRate:CGFloat = 200
-	let size:CGFloat = 5
+	var maxHealth:Int
+	{
+		return DataStore.getInt("Creatures", type, "max health")!
+	}
+	var maxSpeed:CGFloat
+	{
+		return CGFloat(DataStore.getInt("Creatures", type, "max speed")!)
+	}
+	var decelRate:CGFloat
+	{
+		return CGFloat(DataStore.getInt("Creatures", type, "decel rate")!)
+	}
+	var accelRate:CGFloat
+	{
+		return CGFloat(DataStore.getInt("Creatures", type, "accel rate")!)
+	}
+	var size:CGFloat
+	{
+		return CGFloat(DataStore.getInt("Creatures", type, "size")!)
+	}
 	
 	//MARK: weapon stat accessors
 	let attackSpeed:CGFloat = 1.5
