@@ -10,35 +10,48 @@ import SpriteKit
 
 class CreatureStats
 {
-	//MARK: private variables
 	private let type:String
+	
+	//MARK: caching data
+	private let cachedMaxHealth:Int
+	private let cachedMaxSpeed:CGFloat
+	private let cachedDecelRate:CGFloat
+	private let cachedAccelRate:CGFloat
+	private let cachedSize:CGFloat
 	
 	//MARK: initializer
 	init(type:String)
 	{
 		self.type = type;
+		
+		//pre-load values from the plists
+		cachedMaxHealth = DataStore.getInt("Creatures", type, "max health")!
+		cachedMaxSpeed = CGFloat(DataStore.getInt("Creatures", type, "max speed")!)
+		cachedDecelRate = CGFloat(DataStore.getInt("Creatures", type, "decel rate")!)
+		cachedAccelRate = CGFloat(DataStore.getInt("Creatures", type, "accel rate")!)
+		cachedSize = CGFloat(DataStore.getInt("Creatures", type, "size")!)
 	}
 	
 	//MARK: basic stat accessors
 	var maxHealth:Int
 	{
-		return DataStore.getInt("Creatures", type, "max health")!
+		return cachedMaxHealth
 	}
 	var maxSpeed:CGFloat
 	{
-		return CGFloat(DataStore.getInt("Creatures", type, "max speed")!)
+		return cachedMaxSpeed
 	}
 	var decelRate:CGFloat
 	{
-		return CGFloat(DataStore.getInt("Creatures", type, "decel rate")!)
+		return cachedDecelRate
 	}
 	var accelRate:CGFloat
 	{
-		return CGFloat(DataStore.getInt("Creatures", type, "accel rate")!)
+		return cachedAccelRate
 	}
 	var size:CGFloat
 	{
-		return CGFloat(DataStore.getInt("Creatures", type, "size")!)
+		return cachedSize
 	}
 	
 	//MARK: weapon stat accessors
