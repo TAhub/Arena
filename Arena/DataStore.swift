@@ -58,4 +58,10 @@ class DataStore
 		let entry = getEntry(plist, entry)
 		return entry[value] as? String
 	}
+	
+	static func getBool(plist:String, _ entry:String, _ value:String) -> Bool
+	{
+		let entry = getEntry(plist, entry)
+		return entry[value] != nil
+	}
 }

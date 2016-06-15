@@ -17,6 +17,7 @@
 		<key>Other Float</key> <real>7.5</real>
 		<key>String</key> <string>Hello</string>
 		<key>Other String</key> <string>Hi</string>
+		<key>True</key> <true/>
 	</dict>
 	
 	<key>Entry Two</key>

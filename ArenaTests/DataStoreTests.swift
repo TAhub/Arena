@@ -32,6 +32,12 @@ class DataStoreTests: XCTestCase {
 		XCTAssertEqual(DataStore.getString("Tests", "Entry One", "Other String") ?? "", "Hi")
 	}
 	
+	func testGetBool()
+	{
+		XCTAssertTrue(DataStore.getBool("Tests", "Entry One", "True"))
+		XCTAssertFalse(DataStore.getBool("Tests", "Entry One", "False"))
+	}
+	
 	func testNonexistantValues()
 	{
 		XCTAssertNil(DataStore.getInt("Tests", "Entry One", "Nonexistant Int"))
