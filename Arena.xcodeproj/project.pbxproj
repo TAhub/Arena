@@ -26,6 +26,8 @@
 		E44088B21CF3C76C0095AB4A /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44088B11CF3C76C0095AB4A /* GameScene.swift */; };
 		E444318A1CFA8DB00054B0DC /* EnemyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44431891CFA8DB00054B0DC /* EnemyTests.swift */; };
 		E444318C1CFA8E8E0054B0DC /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E444318B1CFA8E8E0054B0DC /* Enemy.swift */; };
+		E481ECEB1D10E73A008C2FAF /* Armors.plist in Resources */ = {isa = PBXBuildFile; fileRef = E481ECEA1D10E73A008C2FAF /* Armors.plist */; };
+		E481ECED1D10EA15008C2FAF /* Weapons.plist in Resources */ = {isa = PBXBuildFile; fileRef = E481ECEC1D10EA15008C2FAF /* Weapons.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		E44088B11CF3C76C0095AB4A /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		E44431891CFA8DB00054B0DC /* EnemyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnemyTests.swift; sourceTree = "<group>"; };
 		E444318B1CFA8E8E0054B0DC /* Enemy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
+		E481ECEA1D10E73A008C2FAF /* Armors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Armors.plist; sourceTree = "<group>"; };
+		E481ECEC1D10EA15008C2FAF /* Weapons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Weapons.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +187,8 @@
 		E4386EEC1CEC0DCF00615DB5 /* Supporting FIles */ = {
 			isa = PBXGroup;
 			children = (
+				E481ECEC1D10EA15008C2FAF /* Weapons.plist */,
+				E481ECEA1D10E73A008C2FAF /* Armors.plist */,
 				E439E4A11D07BE8300EC0432 /* Creatures.plist */,
 				E439E49F1D07B52100EC0432 /* Tests.plist */,
 				E4310CB81CE3FB8500C45BAB /* Assets.xcassets */,
@@ -299,8 +305,10 @@
 			files = (
 				E439E4A01D07B52100EC0432 /* Tests.plist in Resources */,
 				E4310CBC1CE3FB8500C45BAB /* LaunchScreen.storyboard in Resources */,
+				E481ECED1D10EA15008C2FAF /* Weapons.plist in Resources */,
 				E439E4A21D07BE8300EC0432 /* Creatures.plist in Resources */,
 				E4310CB91CE3FB8500C45BAB /* Assets.xcassets in Resources */,
+				E481ECEB1D10E73A008C2FAF /* Armors.plist in Resources */,
 				E4310CB71CE3FB8500C45BAB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

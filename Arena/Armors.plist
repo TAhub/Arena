@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   Armors.plist
+   Arena
+
+   Created by Theodore Abshire on 6/14/16.
+   Copyright (c) 2016 Theodore Abshire. All rights reserved.
+-->
+<plist version="1.0">
+<dict>
+	<key>testarmor</key>
+	<dict>
+		<key>max health</key> <real>0</real>
+		<key>max speed</key> <real>0</real>
+		<key>accel rate</key> <real>0</real>
+		<key>decel rate</key> <real>0</real>
+		<!-- appearance -->
+		<key>sprite</key> <string>armor_breastplate</string>
+	</dict>
+	
+	<!-- real armors -->
+	<key>nude</key>
+	<dict>
+	</dict>
+	<key>breastplate</key>
+	<dict>
+		<key>max health</key> <real>2</real>
+		<key>max speed</key> <real>-15</real>
+		<key>accel rate</key> <real>-50</real>
+		<key>decel rate</key> <real>0</real>
+		<!-- appearance -->
+		<key>sprite</key> <string>armor_breastplate</string>
+	</dict>
+</dict>
+</plist>

@@ -22,7 +22,10 @@ class ViewController: UIViewController {
 		skView.ignoresSiblingOrder = true
 		
 		let game = Game()
-		game.addPlayer(Creature(position: CGPointMake(200, 200), type: "testman"))
+		let player = Creature(position: CGPointMake(200, 200), type: "testman")
+		player.stats.weapon = "dagger"
+		player.stats.armor = "breastplate"
+		game.addPlayer(player)
 		game.addEnemy(Enemy(position: CGPointMake(300, 300), type: "testman"))
 		let scene = GameScene(size: view.bounds.size)
 		scene.game = game

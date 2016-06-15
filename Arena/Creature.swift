@@ -19,7 +19,7 @@ class Creature
 	//MARK: private variables
 	
 	//main variables
-	private var stats:CreatureStats
+	internal var stats:CreatureStats
 	
 	//movement variables
 	private var position:CGPoint
@@ -97,17 +97,37 @@ class Creature
 		}
 		else if isAttacking || isInCooldown
 		{
-			if true //TODO: if using normal slash style
+			switch (stats.weaponAnimSet)
 			{
+			case "slash":
 				//TODO: once I get the new sprites out, change all references of slash2 to slash3 and neutral to slash2
-				if let attackTimer = attackTimer
+				if let _ = attackTimer
 				{
-					return attackTimer < 0.7 ? "_slash1" : "_neutral"
+					return attackTimer < 0.7 ? "_slash1" : "_slash2"
 				}
 				else if attackCooldown != nil
 				{
-					return "_slash2"
+					return "_slash3"
 				}
+			case "thrust":
+				if attackTimer != nil
+				{
+					return "_shoot2"
+				}
+				else if attackCooldown != nil
+				{
+					return "_shoot1"
+				}
+			case "shoot":
+				if attackTimer != nil
+				{
+					return "_shoot1"
+				}
+				else if attackCooldown != nil
+				{
+					return "_shoot2"
+				}
+			default: break
 			}
 		}
 		return "_neutral"

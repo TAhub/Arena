@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   Weapons.plist
+   Arena
+
+   Created by Theodore Abshire on 6/14/16.
+   Copyright (c) 2016 Theodore Abshire. All rights reserved.
+-->
+<plist version="1.0">
+<dict>
+	<key>testweapon</key>
+	<dict>
+		<!-- attack stats -->
+		<key>speed</key> <real>1.5</real>
+		<key>cooldown speed</key> <real>0.9</real>
+		<key>angular range</key> <real>0.5</real>
+		<key>range</key> <real>10</real>
+		<key>knockback</key> <real>70</real>
+		<key>knockback length</key> <real>0.5</real>
+		<key>stun length</key> <real>0.75</real>
+		<!-- throw stats -->
+		<!-- TODO: performance when thrown (include "can throw" bool!) -->
+		<!-- appearance -->
+		<key>sprite</key> <string>weapon_sword</string>
+		<key>attack anim set</key> <string>slash</string>
+	</dict>
+	
+	<!-- real weapons -->
+	<key>unarmed</key>
+	<dict>
+	</dict>
+	<key>dagger</key>
+	<dict>
+		<!-- attack stats -->
+		<key>speed</key> <real>2</real>
+		<key>cooldown speed</key> <real>1.1</real>
+		<key>angular range</key> <real>0.4</real>
+		<key>range</key> <real>8</real>
+		<key>knockback</key> <real>60</real>
+		<key>knockback length</key> <real>0.3</real>
+		<key>stun length</key> <real>0.5</real>
+		<!-- throw stats -->
+		<!-- TODO: performance when thrown (include "can throw" bool!) -->
+		<!-- appearance -->
+		<key>sprite</key> <string>weapon_dagger</string>
+		<key>attack anim set</key> <string>thrust</string>
+	</dict>
+</dict>
+</plist>

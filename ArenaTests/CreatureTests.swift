@@ -45,6 +45,24 @@ class CreatureTests: XCTestCase {
 		XCTAssertFalse(creature.collidePoint(CGPointMake(110, 100)))
 	}
 	
+	//MARK: equipment change tests
+	
+	func testSetWeapon()
+	{
+		XCTAssertEqual(creature.stats.attackSpeed, 1.5)
+		creature.stats.weapon = "dagger"
+		XCTAssertGreaterThan(creature.stats.attackSpeed, 1.5)
+	}
+	
+	func testSetArmor()
+	{
+		XCTAssertEqual(creature.stats.maxHealth, 3)
+		XCTAssertEqual(creature.stats.maxSpeed, 75)
+		creature.stats.armor = "breastplate"
+		XCTAssertGreaterThan(creature.stats.maxHealth, 3)
+		XCTAssertLessThan(creature.stats.maxSpeed, 75)
+	}
+	
 	//MARK: turn system tests
 	
 	func testTurn()

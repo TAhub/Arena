@@ -16,6 +16,8 @@ class CreatureDrawer
 	
 	//save the last sprite name so you can know when to re-draw
 	var lastSpriteName:String?
+	var lastArmorSprite:String?
+	var lastWeaponSprite:String?
 	
 	init(creature:Creature, game:Game, rootNode:SKNode)
 	{
@@ -32,8 +34,14 @@ class CreatureDrawer
 	{
 		myRootNode.removeAllChildren()
 		remakeOneSprite("body", color:UIColor.redColor(), hasGender: false)
-		remakeOneSprite("armor_breastplate", color:UIColor.blueColor(), hasGender: true)
-		remakeOneSprite("weapon_sword", color:UIColor.whiteColor(), hasGender: false)
+		if let armorSprite = creature.stats.armorSprite
+		{
+			remakeOneSprite(armorSprite, color:UIColor.blueColor(), hasGender: true)
+		}
+		if let weaponSprite = creature.stats.weaponSprite
+		{
+			remakeOneSprite(weaponSprite, color:UIColor.whiteColor(), hasGender: false)
+		}
 	}
 	
 	private func remakeOneSprite(baseName:String, color:UIColor, hasGender:Bool)
@@ -56,9 +64,12 @@ class CreatureDrawer
 		
 		//set sprite appearance
 		let spriteName:String = creature.angleSuffix + creature.animSuffix
-		if lastSpriteName ?? "" != spriteName
+		
+		if lastSpriteName ?? "" != spriteName || lastArmorSprite ?? "" != creature.stats.armorSprite || lastWeaponSprite ?? "" != creature.stats.weaponSprite
 		{
 			lastSpriteName = spriteName
+			lastArmorSprite = creature.stats.armorSprite ?? ""
+			lastWeaponSprite = creature.stats.weaponSprite ?? ""
 			remakeSprite()
 		}
 		
