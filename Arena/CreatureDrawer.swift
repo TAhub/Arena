@@ -63,7 +63,16 @@ class CreatureDrawer
 		myRootNode.position = creature.drawPosition
 		
 		//set sprite appearance
-		let spriteName:String = creature.angleSuffix + creature.animSuffix
+		let angleSuffix = creature.angleSuffix
+		var animSuffix = creature.animSuffix
+		
+		//apply space-saving aliases
+		if angleSuffix != "_side" && animSuffix == "_shoot1"
+		{
+			animSuffix = "_slash3"
+		}
+		
+		let spriteName:String = angleSuffix + animSuffix
 		
 		if lastSpriteName ?? "" != spriteName || lastArmorSprite ?? "" != creature.stats.armorSprite || lastWeaponSprite ?? "" != creature.stats.weaponSprite
 		{
