@@ -11,6 +11,7 @@
 <dict>
 	<key>testman</key>
 	<dict>
+		<key>good</key> <true/>
 		<!-- stats -->
 		<key>max health</key> <real>3</real>
 		<key>max speed</key> <real>75</real>
@@ -21,6 +22,16 @@
 		<key>weapon</key> <string>testweapon</string>
 		<key>armor</key> <string>testarmor</string>
 		<key>use armor stats</key> <true/>
+	</dict>
+	<key>testman bad</key>
+	<dict>
+		<!-- stats -->
+		<key>max health</key> <real>3</real>
+		<key>max speed</key> <real>75</real>
+		<key>accel rate</key> <real>200</real>
+		<key>decel rate</key> <real>400</real>
+		<key>size</key> <real>5</real>
+		<!-- equipment -->
 	</dict>
 </dict>
 </plist>

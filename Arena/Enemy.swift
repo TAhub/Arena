@@ -50,12 +50,12 @@ class Enemy:Creature
 		aiProgression = 0
 	}
 	
-	override func update(elapsed: CGFloat, creatureArray: [Creature]? = nil)
+	override func update(elapsed: CGFloat, creatureArray: [Creature]? = nil, projectileArray:[Projectile]? = nil)
 	{
 		startNextAIScript()
 		runCurrentAIScript(elapsed, creatureArray: creatureArray)
 		startNextAIScript()
-		super.update(elapsed, creatureArray: creatureArray)
+		super.update(elapsed, creatureArray: creatureArray, projectileArray: projectileArray)
 	}
 	
 	private func runCurrentAIScript(elapsed: CGFloat, creatureArray: [Creature]?)

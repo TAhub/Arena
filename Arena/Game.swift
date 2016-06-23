@@ -11,6 +11,7 @@ import SpriteKit
 class Game
 {
 	//MARK: variables
+	internal var projectiles = [Projectile]()
 	internal var player:Creature?
 	internal var enemies = [Creature]()
 	private func makeCreatures()
@@ -67,11 +68,11 @@ class Game
 				player.move(moveDirection)
 			}
 			
-			player.update(elapsed, creatureArray: creatures)
+			player.update(elapsed, creatureArray: creatures, projectileArray: projectiles)
 		}
 		for enemy in enemies
 		{
-			enemy.update(elapsed, creatureArray: creatures)
+			enemy.update(elapsed, creatureArray: creatures, projectileArray: projectiles)
 		}
 	}
 }

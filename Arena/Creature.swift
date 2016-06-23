@@ -203,6 +203,18 @@ class Creature
 		}
 	}
 	
+	func collideProjectile(projectile:Projectile) -> Bool
+	{
+		if projectile.good != self.stats.good && !projectile.dead && self.health > 0
+		{
+			let xDis:CGFloat = abs(projectile.realPosition.x - position.x)
+			let yDis:CGFloat = abs(projectile.realPosition.y - position.y)
+			let distance:CGFloat = sqrt(xDis * xDis + yDis * yDis)
+			return distance <= stats.size + projectile.size
+		}
+		return false
+	}
+	
 	func collidePoint(point:CGPoint) -> Bool
 	{
 		let xDis:CGFloat = abs(point.x - position.x)
@@ -232,9 +244,9 @@ class Creature
 	
 	//MARK: update code
 	
-	func update(elapsed:CGFloat, creatureArray:[Creature]? = nil)
+	func update(elapsed:CGFloat, creatureArray:[Creature]? = nil, projectileArray:[Projectile]? = nil)
 	{
-		preStunUpdate(elapsed, creatureArray: creatureArray)
+		preStunUpdate(elapsed, creatureArray: creatureArray, projectileArray: projectileArray)
 		
 		//remove stun from elapsed
 		var elapsed = elapsed
@@ -249,16 +261,16 @@ class Creature
 			stun = 0
 		}
 		
-		postStunUpdate(elapsed, creatureArray: creatureArray)
+		postStunUpdate(elapsed, creatureArray: creatureArray, projectileArray: projectileArray)
 	}
 	
-	private func preStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?)
+	private func preStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?, projectileArray:[Projectile]?)
 	{
 		//apply knockback
 		if (knockbackLength > 0)
 		{
 			let knockbackLengthUse = min(elapsed, knockbackLength)
-			moveInner(CGPointMake(cos(knockbackDirection) * knockbackLengthUse * knockbackStrength, sin(knockbackDirection) * knockbackLengthUse * knockbackStrength), creatureArray: creatureArray)
+			moveInner(CGPointMake(cos(knockbackDirection) * knockbackLengthUse * knockbackStrength, sin(knockbackDirection) * knockbackLengthUse * knockbackStrength), creatureArray: creatureArray, projectileArray: projectileArray)
 			
 			knockbackLength = max(0, knockbackLength - elapsed)
 		}
@@ -302,7 +314,7 @@ class Creature
 	
 	func inRangeToHit(creature:Creature) -> Bool
 	{
-		if !(creature === self)
+		if creature.stats.good != stats.good
 		{
 			let xDif = creature.position.x - position.x
 			let yDif = creature.position.y - position.y
@@ -334,7 +346,7 @@ class Creature
 		return false
 	}
 	
-	private func postStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?)
+	private func postStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?, projectileArray:[Projectile]?)
 	{
 		if elapsed == 0
 		{
@@ -380,13 +392,15 @@ class Creature
 		accelDirection = nil
 		
 		//move based on your movement acceleration
-		moveInner(CGPointMake(moveVector.x * elapsed, moveVector.y * elapsed), creatureArray: creatureArray)
+		moveInner(CGPointMake(moveVector.x * elapsed, moveVector.y * elapsed), creatureArray: creatureArray, projectileArray: projectileArray)
 	}
 	
-	private func moveInner(vector:CGPoint, creatureArray:[Creature]?)
+	private func moveInner(vector:CGPoint, creatureArray:[Creature]?, projectileArray:[Projectile]?)
 	{
 		if let creatureArray = creatureArray
 		{
+			let projectileArray = projectileArray ?? []
+			
 			let length:CGFloat = abs(vector.x * vector.x + vector.y * vector.y)
 			
 			//don't go through the whole process when there is no movement necessary
@@ -395,6 +409,7 @@ class Creature
 				return
 			}
 			
+			//TODO: make moveInterval into a constant
 			let moveInterval:CGFloat = 0.75
 			let moves:Int = Int(ceil(length / moveInterval))
 			for _ in 0..<moves
@@ -403,6 +418,13 @@ class Creature
 				if collideAt(newPosition, creatureArray: creatureArray)
 				{
 					return
+				}
+				for projectile in projectileArray
+				{
+					if self.collideProjectile(projectile)
+					{
+						projectile.detonateOn(self)
+					}
 				}
 				self.position = newPosition
 			}

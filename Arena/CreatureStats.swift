@@ -41,6 +41,7 @@ class CreatureStats
 	private let cachedDecelRate:CGFloat
 	private let cachedAccelRate:CGFloat
 	private let cachedSize:CGFloat
+	private let cachedGood:Bool
 	private let cachedUseArmorStats:Bool
 	private var cachedWeaponSprite:String?
 	private var cachedArmorSprite:String?
@@ -60,6 +61,7 @@ class CreatureStats
 		cachedAccelRate = CGFloat(DataStore.getInt("Creatures", type, "accel rate")!)
 		cachedSize = CGFloat(DataStore.getInt("Creatures", type, "size")!)
 		cachedUseArmorStats = DataStore.getBool("Creatures", type, "use armor stats")
+		cachedGood = DataStore.getBool("Creatures", type, "good")
 		
 		//pre-load some values for your equipment too
 		setWeaponSprite()
@@ -86,6 +88,10 @@ class CreatureStats
 	var size:CGFloat
 	{
 		return cachedSize
+	}
+	var good:Bool
+	{
+		return cachedGood
 	}
 	
 	//MARK: weapon stat accessors

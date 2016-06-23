@@ -20,7 +20,7 @@ class CreatureTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 		
 		creature = Creature(position: CGPointMake(100, 100), type: "testman")
-		otherCreature = Creature(position: CGPointMake(105, 100), type: "testman")
+		otherCreature = Creature(position: CGPointMake(105, 100), type: "testman bad")
 		creatureArray = [creature, otherCreature]
     }
     
@@ -38,6 +38,12 @@ class CreatureTests: XCTestCase {
 	}
 	
 	//MARK: misc tests
+	
+	func testAlignment()
+	{
+		XCTAssertTrue(creature.stats.good)
+		XCTAssertFalse(otherCreature.stats.good)
+	}
 	
 	func testCollidePoint()
 	{
@@ -357,6 +363,17 @@ class CreatureTests: XCTestCase {
 		XCTAssertEqual(otherCreature.health, 2)
 	}
 	
+	func testAttackNoHitOnAlly()
+	{
+		let ally = Creature(position: otherCreature.realPosition, type: "testman")
+		creatureArray.append(ally)
+		
+		XCTAssertFalse(creature.inRangeToHit(ally))
+		creature.attack()
+		creature.update(100, creatureArray: creatureArray)
+		XCTAssertEqual(ally.health, 3)
+	}
+	
 	func testAttackOutOfRange()
 	{
 		otherCreature.move(0)
@@ -424,6 +441,51 @@ class CreatureTests: XCTestCase {
 		creature.move(0)
 		creature.update(0.1)
 		XCTAssertEqual(creature.realPosition.x, 100)
+	}
+	
+	//MARK: projectile tests
+	
+	func testProjectileCollideDueToSize()
+	{
+		let projectileThatWillHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 10, good: false)
+		XCTAssertTrue(creature.collideProjectile(projectileThatWillHit))
+		let projectileThatWontHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 9, good: false)
+		XCTAssertFalse(creature.collideProjectile(projectileThatWontHit))
+	}
+	
+	func testProjectileCollideDueToPosition()
+	{
+		let projectileThatWillHit = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 1, good: false)
+		XCTAssertTrue(creature.collideProjectile(projectileThatWillHit))
+		let projectileThatWontHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 1, good: false)
+		XCTAssertFalse(creature.collideProjectile(projectileThatWontHit))
+	}
+	
+	func testProjectileDoesntHitAllies()
+	{
+		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, good: true)
+		XCTAssertFalse(creature.collideProjectile(projectile))
+	}
+	
+	func testDeadProjectileDoesntHit()
+	{
+		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, good: true)
+		projectile.dead = true
+		XCTAssertFalse(creature.collideProjectile(projectile))
+	}
+	
+	func testProjectileDoesntHitDead()
+	{
+		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, good: true)
+		creature.health = 0
+		XCTAssertFalse(creature.collideProjectile(projectile))
+	}
+	
+	func testHitProjectileWhileMoving()
+	{
+		let projectile = Projectile(position: CGPointMake(110, 100), angle: 0, speed: 0, size: 1, good: false)
+		creature.move(0)
+		creature.update(1.0, creatureArray: nil, projectileArray: [projectile])
 	}
 	
 	//MARK: helper functions

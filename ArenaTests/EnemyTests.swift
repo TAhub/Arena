@@ -19,7 +19,7 @@ class EnemyTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
 		
-		enemy = Enemy(position: CGPointMake(100, 100), type: "testman")
+		enemy = Enemy(position: CGPointMake(100, 100), type: "testman bad")
 		player = Creature(position: CGPointMake(120, 100), type: "testman")
 		creatureArray = [player, enemy]
     }
