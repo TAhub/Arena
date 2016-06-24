@@ -447,43 +447,43 @@ class CreatureTests: XCTestCase {
 	
 	func testProjectileCollideDueToSize()
 	{
-		let projectileThatWillHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 10, good: false)
+		let projectileThatWillHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 10, range: 1000, good: false, knockback: 0, knockbackLength: 0, stun: 0)
 		XCTAssertTrue(creature.collideProjectile(projectileThatWillHit))
-		let projectileThatWontHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 9, good: false)
+		let projectileThatWontHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 9, range: 1000, good: false, knockback: 0, knockbackLength: 0, stun: 0)
 		XCTAssertFalse(creature.collideProjectile(projectileThatWontHit))
 	}
 	
 	func testProjectileCollideDueToPosition()
 	{
-		let projectileThatWillHit = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 1, good: false)
+		let projectileThatWillHit = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 1, range: 1000, good: false, knockback: 0, knockbackLength: 0, stun: 0)
 		XCTAssertTrue(creature.collideProjectile(projectileThatWillHit))
-		let projectileThatWontHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 1, good: false)
+		let projectileThatWontHit = Projectile(position: CGPointMake(115, 100), angle: 0, speed: 0, size: 1, range: 1000, good: false, knockback: 0, knockbackLength: 0, stun: 0)
 		XCTAssertFalse(creature.collideProjectile(projectileThatWontHit))
 	}
 	
 	func testProjectileDoesntHitAllies()
 	{
-		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, good: true)
+		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, range: 1000, good: true, knockback: 0, knockbackLength: 0, stun: 0)
 		XCTAssertFalse(creature.collideProjectile(projectile))
 	}
 	
 	func testDeadProjectileDoesntHit()
 	{
-		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, good: true)
+		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, range: 1000, good: true, knockback: 0, knockbackLength: 0, stun: 0)
 		projectile.dead = true
 		XCTAssertFalse(creature.collideProjectile(projectile))
 	}
 	
 	func testProjectileDoesntHitDead()
 	{
-		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, good: true)
+		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 0, size: 999, range: 1000, good: true, knockback: 0, knockbackLength: 0, stun: 0)
 		creature.health = 0
 		XCTAssertFalse(creature.collideProjectile(projectile))
 	}
 	
 	func testHitProjectileWhileMoving()
 	{
-		let projectile = Projectile(position: CGPointMake(110, 100), angle: 0, speed: 0, size: 1, good: false)
+		let projectile = Projectile(position: CGPointMake(110, 100), angle: 0, speed: 0, size: 1, range: 1000, good: false, knockback: 0, knockbackLength: 0, stun: 0)
 		creature.move(0)
 		let projectileSet = ProjectileSet()
 		projectileSet.addProjectile(projectile)
@@ -497,6 +497,14 @@ class CreatureTests: XCTestCase {
 		creature.attack()
 		creature.update(5.0, creatureArray: nil, projectileSet: projectileSet)
 		XCTAssertEqual(projectileSet.numberOfProjectiles, 1)
+	}
+	
+	func testProjectileKnockback()
+	{
+		let projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 1, size: 999, range: 1000, good: false, knockback: 1000, knockbackLength: 1, stun: 0)
+		projectile.update(1, creatureArray: creatureArray)
+		creature.update(1.0)
+		XCTAssertGreaterThan(creature.realPosition.x, 100)
 	}
 	
 	//MARK: helper functions

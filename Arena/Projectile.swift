@@ -12,30 +12,33 @@ class Projectile
 {
 	private let angle:CGFloat
 	private let speed:CGFloat
+	private var range:CGFloat
+	private let knockback:CGFloat
+	private let knockbackLength:CGFloat
+	private let stun:CGFloat
 	let size:CGFloat
 	let good:Bool
 	private var position:CGPoint
 	var dead:Bool = false
 	
-	init(position:CGPoint, angle:CGFloat, speed:CGFloat, size:CGFloat, good:Bool)
+	init(position:CGPoint, angle:CGFloat, speed:CGFloat, size:CGFloat, range:CGFloat, good:Bool, knockback: CGFloat, knockbackLength: CGFloat, stun: CGFloat)
 	{
 		self.position = position
 		self.angle = angle
 		self.good = good
 		self.speed = speed
 		self.size = size
+		self.range = range
+		self.knockbackLength = knockbackLength
+		self.knockback = knockback
+		self.stun = stun
 	}
 	
-	convenience init(position:CGPoint, angle:CGFloat, good:Bool, type:String)
+	convenience init(position:CGPoint, angle:CGFloat, range:CGFloat, good:Bool, type:String, knockback: CGFloat, knockbackLength: CGFloat, stun: CGFloat)
 	{
 		let size = CGFloat(DataStore.getFloat("Projectiles", type, "size")!)
 		let speed = CGFloat(DataStore.getFloat("Projectiles", type, "speed")!)
-		self.init(position: position, angle: angle, speed: speed, size: size, good: good)
-//		self.position = position
-//		self.angle = angle
-//		self.good = good
-//		self.speed = CGFloat(DataStore.getFloat("Projectiles", type, "speed")!)
-//		self.size = CGFloat(DataStore.getFloat("Projectiles", type, "size")!)
+		self.init(position: position, angle: angle, speed: speed, size: size, range: range, good: good, knockback: knockback, knockbackLength: knockbackLength, stun: stun)
 	}
 	
 	//MARK: logic
@@ -61,14 +64,20 @@ class Projectile
 				}
 			}
 		}
+		
+		//account for maximum range
+		range -= length
+		if range <= 0
+		{
+			dead = true
+		}
 	}
 	
 	func detonateOn(creature:Creature)
 	{
 		self.dead = true
 		
-		//TODO: real knockback data
-		creature.takeHit(1, direction: angle, knockback: 0, knockbackLength: 0, stun: 0)
+		creature.takeHit(1, direction: angle, knockback: knockback, knockbackLength: knockbackLength, stun: stun)
 	}
 	
 	//MARK: accessors

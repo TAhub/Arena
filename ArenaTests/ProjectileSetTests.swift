@@ -30,7 +30,7 @@ class ProjectileSetTests: XCTestCase, ProjectileSetDelegate {
 	func testAddProjectile()
 	{
 		XCTAssertEqual(projectileSet.numberOfProjectiles, 0)
-		let projectile = Projectile(position: CGPointZero, angle: 0, good: false, type: "testprojectile")
+		let projectile = Projectile(position: CGPointZero, angle: 0, range: 1000, good: false, type: "testprojectile", knockback: 0, knockbackLength: 0, stun: 0)
 		projectileSet.addProjectile(projectile)
 		XCTAssertEqual(projectileSet.numberOfProjectiles, 1)
 		XCTAssertTrue(delegateProjectileAdded != nil && delegateProjectileAdded! === projectile)
@@ -38,7 +38,7 @@ class ProjectileSetTests: XCTestCase, ProjectileSetDelegate {
 	
 	func testProjectileSetUpdate()
 	{
-		let projectile = Projectile(position: CGPointZero, angle: 0, good: false, type: "testprojectile")
+		let projectile = Projectile(position: CGPointZero, angle: 0, range: 1000, good: false, type: "testprojectile", knockback: 0, knockbackLength: 0, stun: 0)
 		projectileSet.addProjectile(projectile)
 		projectileSet.update(0.1)
 		XCTAssertGreaterThan(projectile.realPosition.x, 0)
@@ -46,7 +46,7 @@ class ProjectileSetTests: XCTestCase, ProjectileSetDelegate {
 	
 	func testProjectileSetProjectilesHit()
 	{
-		let projectile = Projectile(position: CGPointZero, angle: 0, good: false, type: "testprojectile")
+		let projectile = Projectile(position: CGPointZero, angle: 0, range: 1000, good: false, type: "testprojectile", knockback: 0, knockbackLength: 0, stun: 0)
 		projectileSet.addProjectile(projectile)
 		let creature = Creature(position: CGPointZero, type: "testman")
 		projectileSet.collideWith(creature)

@@ -16,7 +16,7 @@ class ProjectileTests: XCTestCase {
     override func setUp() {
         super.setUp()
 		
-		projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 100, size: 5, good: true)
+		projectile = Projectile(position: CGPointMake(100, 100), angle: 0, speed: 100, size: 5, range:1000, good: true, knockback: 0, knockbackLength: 0, stun: 0)
     }
     
     override func tearDown() {
@@ -26,7 +26,7 @@ class ProjectileTests: XCTestCase {
 	
 	func testProjectileLoadByType()
 	{
-		let typeProjectile = Projectile(position: CGPointMake(100, 100), angle: 0, good: true, type: "testprojectile")
+		let typeProjectile = Projectile(position: CGPointMake(100, 100), angle: 0, range:1000, good: true, type: "testprojectile", knockback: 0, knockbackLength: 0, stun: 0)
 		XCTAssertEqual(typeProjectile.size, 5)
 	}
 	
@@ -54,6 +54,14 @@ class ProjectileTests: XCTestCase {
 		XCTAssertFalse(projectile.dead)
 		projectile.detonateOn(enemyToHit)
 		XCTAssertEqual(enemyToHit.health, 2)
+		XCTAssertTrue(projectile.dead)
+	}
+	
+	func testMaxRange()
+	{
+		projectile.update(9)
+		XCTAssertFalse(projectile.dead)
+		projectile.update(1)
 		XCTAssertTrue(projectile.dead)
 	}
 }

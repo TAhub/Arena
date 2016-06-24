@@ -303,7 +303,7 @@ class Creature
 			if let projectileSet = projectileSet
 			{
 				//create a projectile
-				let projectile = Projectile(position: self.position, angle: self.facingDirection, good: self.stats.good, type: projectile)
+				let projectile = Projectile(position: self.position, angle: self.facingDirection, range: stats.attackRange, good: self.stats.good, type: projectile, knockback: stats.attackKnockback, knockbackLength: stats.attackKnockbackLength, stun: stats.attackStunLength)
 				projectileSet.addProjectile(projectile)
 			}
 		}
