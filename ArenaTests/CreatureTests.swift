@@ -485,7 +485,18 @@ class CreatureTests: XCTestCase {
 	{
 		let projectile = Projectile(position: CGPointMake(110, 100), angle: 0, speed: 0, size: 1, good: false)
 		creature.move(0)
-		creature.update(1.0, creatureArray: nil, projectileArray: [projectile])
+		let projectileSet = ProjectileSet()
+		projectileSet.addProjectile(projectile)
+		creature.update(1.0, creatureArray: nil, projectileSet: projectileSet)
+	}
+	
+	func testCreateProjectile()
+	{
+		let projectileSet = ProjectileSet()
+		creature.stats.weapon = "bow"
+		creature.attack()
+		creature.update(5.0, creatureArray: nil, projectileSet: projectileSet)
+		XCTAssertEqual(projectileSet.numberOfProjectiles, 1)
 	}
 	
 	//MARK: helper functions

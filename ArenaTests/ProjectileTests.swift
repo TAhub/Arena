@@ -24,6 +24,12 @@ class ProjectileTests: XCTestCase {
         super.tearDown()
     }
 	
+	func testProjectileLoadByType()
+	{
+		let typeProjectile = Projectile(position: CGPointMake(100, 100), angle: 0, good: true, type: "testprojectile")
+		XCTAssertEqual(typeProjectile.size, 5)
+	}
+	
 	func testProjectileMove()
 	{
 		projectile.update(0.1)

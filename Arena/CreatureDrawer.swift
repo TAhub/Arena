@@ -11,7 +11,6 @@ import SpriteKit
 class CreatureDrawer
 {
 	let creature:Creature
-	let game:Game
 	let myRootNode:SKNode
 	
 	//save the last sprite name so you can know when to re-draw
@@ -19,9 +18,8 @@ class CreatureDrawer
 	var lastArmorSprite:String?
 	var lastWeaponSprite:String?
 	
-	init(creature:Creature, game:Game, rootNode:SKNode)
+	init(creature:Creature, rootNode:SKNode)
 	{
-		self.game = game
 		self.creature = creature
 		
 		myRootNode = SKNode()

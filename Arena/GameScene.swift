@@ -8,11 +8,12 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, ProjectileSetDelegate {
 	
 	var game:Game!
 	private var lastTime:NSTimeInterval?
 	private var creatureDrawers = [CreatureDrawer]()
+	private var projectileDrawers = [ProjectileDrawer]()
 	
 	private var thumbstick:PsuedoButton!
 	private var attackButton:PsuedoButton!
@@ -22,8 +23,10 @@ class GameScene: SKScene {
 		//add creature views to correspond to the game's creatures
 		for creature in game.creatures
 		{
-			creatureDrawers.append(CreatureDrawer(creature: creature, game: game, rootNode: self))
+			creatureDrawers.append(CreatureDrawer(creature: creature, rootNode: self))
 		}
+		
+		game.projectiles.delegate = self
 		
 		//add the thumbstick
 		thumbstick = PsuedoButton(size: 60, position: CGPointMake(80, 80), comparisonNode: self, touchClosure: { (angle) in
@@ -81,5 +84,18 @@ class GameScene: SKScene {
 		{
 			creatureDrawer.update()
 		}
+		//TODO: handle dead creature drawers
+		
+		for projectileDrawer in projectileDrawers
+		{
+			projectileDrawer.update()
+		}
+		projectileDrawers = projectileDrawers.filter({!($0.dead)})
+	}
+	
+	//MARK: delegate methods
+	func projectileAdded(projectile: Projectile)
+	{
+		projectileDrawers.append(ProjectileDrawer(projectile: projectile, rootNode: self))
 	}
 }

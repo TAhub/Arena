@@ -244,9 +244,9 @@ class Creature
 	
 	//MARK: update code
 	
-	func update(elapsed:CGFloat, creatureArray:[Creature]? = nil, projectileArray:[Projectile]? = nil)
+	func update(elapsed:CGFloat, creatureArray:[Creature]? = nil, projectileSet:ProjectileSet? = nil)
 	{
-		preStunUpdate(elapsed, creatureArray: creatureArray, projectileArray: projectileArray)
+		preStunUpdate(elapsed, creatureArray: creatureArray, projectileSet: projectileSet)
 		
 		//remove stun from elapsed
 		var elapsed = elapsed
@@ -261,16 +261,16 @@ class Creature
 			stun = 0
 		}
 		
-		postStunUpdate(elapsed, creatureArray: creatureArray, projectileArray: projectileArray)
+		postStunUpdate(elapsed, creatureArray: creatureArray, projectileSet: projectileSet)
 	}
 	
-	private func preStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?, projectileArray:[Projectile]?)
+	private func preStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?, projectileSet:ProjectileSet?)
 	{
 		//apply knockback
 		if (knockbackLength > 0)
 		{
 			let knockbackLengthUse = min(elapsed, knockbackLength)
-			moveInner(CGPointMake(cos(knockbackDirection) * knockbackLengthUse * knockbackStrength, sin(knockbackDirection) * knockbackLengthUse * knockbackStrength), creatureArray: creatureArray, projectileArray: projectileArray)
+			moveInner(CGPointMake(cos(knockbackDirection) * knockbackLengthUse * knockbackStrength, sin(knockbackDirection) * knockbackLengthUse * knockbackStrength), creatureArray: creatureArray, projectileSet: projectileSet)
 			
 			knockbackLength = max(0, knockbackLength - elapsed)
 		}
@@ -281,7 +281,7 @@ class Creature
 			self.attackTimer = attackTimer + stats.attackSpeed * elapsed
 			if self.attackTimer! >= 1
 			{
-				unleashAttack(creatureArray)
+				unleashAttack(creatureArray, projectileSet: projectileSet)
 				self.attackTimer = nil
 				self.attackCooldown = 0
 			}
@@ -296,9 +296,18 @@ class Creature
 		}
 	}
 	
-	private func unleashAttack(creatureArray:[Creature]?)
+	private func unleashAttack(creatureArray:[Creature]?, projectileSet:ProjectileSet?)
 	{
-		if let creatureArray = creatureArray
+		if let projectile = self.stats.attackProjectile
+		{
+			if let projectileSet = projectileSet
+			{
+				//create a projectile
+				let projectile = Projectile(position: self.position, angle: self.facingDirection, good: self.stats.good, type: projectile)
+				projectileSet.addProjectile(projectile)
+			}
+		}
+		else if let creatureArray = creatureArray
 		{
 			//check to see if anyone is in the arc
 			for creature in creatureArray
@@ -346,7 +355,7 @@ class Creature
 		return false
 	}
 	
-	private func postStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?, projectileArray:[Projectile]?)
+	private func postStunUpdate(elapsed:CGFloat, creatureArray:[Creature]?, projectileSet:ProjectileSet?)
 	{
 		if elapsed == 0
 		{
@@ -392,15 +401,13 @@ class Creature
 		accelDirection = nil
 		
 		//move based on your movement acceleration
-		moveInner(CGPointMake(moveVector.x * elapsed, moveVector.y * elapsed), creatureArray: creatureArray, projectileArray: projectileArray)
+		moveInner(CGPointMake(moveVector.x * elapsed, moveVector.y * elapsed), creatureArray: creatureArray, projectileSet: projectileSet)
 	}
 	
-	private func moveInner(vector:CGPoint, creatureArray:[Creature]?, projectileArray:[Projectile]?)
+	private func moveInner(vector:CGPoint, creatureArray:[Creature]?, projectileSet:ProjectileSet?)
 	{
 		if let creatureArray = creatureArray
 		{
-			let projectileArray = projectileArray ?? []
-			
 			let length:CGFloat = abs(vector.x * vector.x + vector.y * vector.y)
 			
 			//don't go through the whole process when there is no movement necessary
@@ -419,13 +426,7 @@ class Creature
 				{
 					return
 				}
-				for projectile in projectileArray
-				{
-					if self.collideProjectile(projectile)
-					{
-						projectile.detonateOn(self)
-					}
-				}
+				projectileSet?.collideWith(self)
 				self.position = newPosition
 			}
 		}

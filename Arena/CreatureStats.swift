@@ -123,6 +123,10 @@ class CreatureStats
 	{
 		return CGFloat(DataStore.getFloat("Weapons", weapon, "stun length")!)
 	}
+	var attackProjectile:String?
+	{
+		return DataStore.getString("Weapons", weapon, "projectile")
+	}
 	
 	//MARK: appearance accessors
 	var weaponSprite:String?

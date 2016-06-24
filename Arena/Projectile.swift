@@ -26,6 +26,18 @@ class Projectile
 		self.size = size
 	}
 	
+	convenience init(position:CGPoint, angle:CGFloat, good:Bool, type:String)
+	{
+		let size = CGFloat(DataStore.getFloat("Projectiles", type, "size")!)
+		let speed = CGFloat(DataStore.getFloat("Projectiles", type, "speed")!)
+		self.init(position: position, angle: angle, speed: speed, size: size, good: good)
+//		self.position = position
+//		self.angle = angle
+//		self.good = good
+//		self.speed = CGFloat(DataStore.getFloat("Projectiles", type, "speed")!)
+//		self.size = CGFloat(DataStore.getFloat("Projectiles", type, "size")!)
+	}
+	
 	//MARK: logic
 	
 	func update(elapsed:CGFloat, creatureArray:[Creature]? = nil)

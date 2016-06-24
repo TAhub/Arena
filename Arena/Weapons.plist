@@ -57,5 +57,22 @@
 		<key>sprite</key> <string>weapon_dagger</string>
 		<key>attack anim set</key> <string>thrust</string>
 	</dict>
+	<key>bow</key>
+	<dict>
+		<!-- attack stats -->
+		<key>speed</key> <real>1.5</real>
+		<key>cooldown speed</key> <real>0.9</real>
+		<key>angular range</key> <real>0.5</real>
+		<key>range</key> <real>10</real>
+		<key>knockback</key> <real>70</real>
+		<key>knockback length</key> <real>0.5</real>
+		<key>stun length</key> <real>0.75</real>
+		<key>projectile</key> <string>arrow</string>
+		<!-- throw stats -->
+		<!-- TODO: performance when thrown (include "can throw" bool!) -->
+		<!-- appearance -->
+		<key>sprite</key> <string>weapon_bow</string>
+		<key>attack anim set</key> <string>shoot</string>
+	</dict>
 </dict>
 </plist>
